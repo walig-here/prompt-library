@@ -1,0 +1,236 @@
+@import "../base.css";
+
+.md-button {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    box-shadow: none;
+    overflow: hidden;
+    position: relative;
+    border-style: solid;
+}
+
+.md-button:enabled {
+    cursor: pointer;
+}
+
+.md-button::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.md-button-contents {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 8px;
+}
+
+/* ================================================================================================================== */
+/* Size */
+
+.md-button-extra-small {
+    height: 32px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-width: 1px;
+    font-weight: 500;
+    font-size: 14pt;
+    line-height: 20pt;
+}
+
+.md-button-small {
+    height: 40px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-width: 1px;
+    font-weight: 500;
+    font-size: 14pt;
+    line-height: 20pt;
+}
+
+.md-button-medium {
+    height: 56px;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-width: 1px;
+    font-weight: 500;
+    font-size: 16pt;
+    line-height: 24pt;
+}
+
+.md-button-large {
+    height: 96px;
+    padding-left: 48px;
+    padding-right: 48px;
+    border-width: 2px;
+    font-weight: 400;
+    font-size: 24pt;
+    line-height: 32pt;
+}
+
+.md-button-contents-large {
+    column-gap: 12px;
+}
+
+.md-button-extra-large {
+    height: 136px;
+    padding-left: 64px;
+    padding-right: 64px;
+    border-width: 3px;
+    font-weight: 400;
+    font-size: 32pt;
+    line-height: 40pt;
+}
+
+.md-button-contents-extra-large {
+    column-gap: 16px;
+}
+
+/* ================================================================================================================== */
+/* Shape */
+
+.md-button-round-extra-small {
+    border-radius: 100ch;
+}
+
+.md-button-round-extra-small:active {
+    border-radius: 8px;
+}
+
+.md-button-square-extra-small {
+    border-radius: 12px;
+}
+
+.md-button-square-extra-small:active {
+    border-radius: 8px;
+}
+
+.md-button-square-small {
+    border-radius: 12px;
+}
+
+.md-button-square-small:active {
+    border-radius: 8px;
+}
+
+.md-button-round-small {
+    border-radius: 100ch;
+}
+
+.md-button-round-small:active {
+    border-radius: 8px;
+}
+
+.md-button-square-medium {
+    border-radius: 16px;
+}
+
+.md-button-square-medium:active {
+    border-radius: 12px;
+}
+
+.md-button-round-medium {
+    border-radius: 100ch;
+}
+
+.md-button-round-medium:active {
+    border-radius: 12px;
+}
+
+.md-button-square-large {
+    border-radius: 28px;
+}
+
+.md-button-square-large:active {
+    border-radius: 16px;
+}
+
+.md-button-round-large {
+    border-radius: 100ch;
+}
+
+.md-button-round-large:active {
+    border-radius: 16px;
+}
+
+.md-button-square-extra-large {
+    border-radius: 28px;
+}
+
+.md-button-square-extra-large:active {
+    border-radius: 16px;
+}
+
+.md-button-round-extra-large {
+    border-radius: 100ch;
+}
+
+.md-button-round-extra-large:active {
+    border-radius: 16px;
+}
+
+/* ================================================================================================================== */
+/* Color */
+
+.md-button-elevated {
+    background-color: var(--color-surface-container-low);
+    border-color: var(--color-surface-container-low);
+    color: var(--color-primary);
+    box-shadow: 
+        0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+        0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+.md-button-elevated:disabled {
+    background-color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+    border-color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
+}
+
+.md-button-elevated:hover::before {
+    background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+.md-button-elevated:active::before {
+    background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+.md-button-filled {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.md-button-filled:disabled {
+    background-color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+    border-color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
+}
+
+.md-button-filled:hover::before {
+    background-color: color-mix(in srgb, var(--color-on-primary) 8%, transparent);
+}
+
+.md-button-filled:active::before {
+    background-color: color-mix(in srgb, var(--color-on-primary) 10%, transparent);
+}
+
+.md-button-outlined {
+    background-color: color-mix(in srgb, red 0%, transparent);
+    border-color: var(--color-outline-variant);
+    color: var(--color-on-surface-variant);
+}
+
+.md-button-outlined:disabled {
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
+}
+
+.md-button-outlined:hover::before {
+    background-color: color-mix(in srgb, var(--color-on-surface-variant) 8%, transparent);
+}

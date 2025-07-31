@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap');
+
+:root {
+    /* Element colors */
+    --color-primary: #78590C;
+    --color-secondary: #6c5c3f;
+    --color-background: #FFF8F2;
+    --color-surface: #FFF8F2;
+    --color-secondary-container: #F5E0BB;
+    --color-surface-container-high: #F1E7D9;
+    --color-error-container: #FFDAD6;
+    --color-surface-container-low: #fdf2e5;
+    --color-surface-container-lowest: #FFFFFF;
+    --color-outline: #7F7667;
+    --color-outline-variant: #D1C5B4;
+    --color-error: #BA1A1A;
+    --color-surface-bright: #FFF8F2;
+    --color-shadow: #0000;
+
+    --color-on-primary: #FFFFFF;
+    --color-on-background: #1F1B13;
+    --color-on-surface-variant: #4d4639;
+    --color-on-surface: #201c13;
+    --color-on-secondary-container: #53452A;
+    --color-on-error-container: #93000A;
+    --color-on-error: #FFFFFF;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    color: var(--color-text);
+    background: var(--color-background);
+    line-height: 1.6;
+    font-family: 'Roboto', 'serif';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.main-content {
+    grid-column-start: 2;
+    grid-column-end: 5;
+}

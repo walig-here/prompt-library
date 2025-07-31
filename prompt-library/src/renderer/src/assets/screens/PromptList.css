@@ -1,0 +1,13 @@
+@import "../base.css";
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    column-gap: 3px;
+}

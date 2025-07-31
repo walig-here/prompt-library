@@ -1,0 +1,165 @@
+@import "../base.css";
+
+.serif {
+    font-family: 'Roboto serif', serif;
+}
+
+/* Display */
+
+.md-text-display-large {
+    font-weight: 400;
+    font-size: 57pt;
+    line-height: 64pt;
+}
+
+.md-text-display-large-emphasized {
+    font-weight: 500;
+}
+
+.md-text-display-medium {
+    font-weight: 400;
+    font-size: 45pt;
+    line-height: 52pt;
+}
+
+.md-text-display-medium-emphasized {
+    font-weight: 500;
+}
+
+.md-text-display-small {
+    font-weight: 400;
+    font-size: 36pt;
+    line-height: 44pt;
+}
+
+.md-text-display-small-emphasized {
+    font-weight: 500;
+}
+
+/* Headline */
+
+.md-text-headline-large {
+    font-weight: 400;
+    font-size: 32pt;
+    line-height: 40pt;
+}
+
+.md-text-headline-large-emphasized {
+    font-weight: 500;
+}
+
+.md-text-headline-medium {
+    font-weight: 400;
+    font-size: 28pt;
+    line-height: 36pt;
+}
+
+.md-text-headline-medium-emphasized {
+    font-weight: 500;
+}
+
+.md-text-headline-small {
+    font-weight: 400;
+    font-size: 24pt;
+    line-height: 32pt;
+}
+
+.md-text-headline-small-emphasized {
+    font-weight: 500;
+}
+
+/* Title */
+
+.md-text-title-large {
+    font-weight: 400;
+    font-size: 22pt;
+    line-height: 28pt;
+}
+
+.md-text-title-large-emphasized {
+    font-weight: 500;
+}
+
+.md-text-title-medium {
+    font-weight: 500;
+    font-size: 16pt;
+    line-height: 24pt;
+}
+
+.md-text-title-medium-emphasized {
+    font-weight: 700;
+}
+
+.md-text-title-small {
+    font-weight: 500;
+    font-size: 14pt;
+    line-height: 20pt;
+}
+
+.md-text-title-small-emphasized {
+    font-weight: 700;
+}
+
+/* Body */
+
+.md-text-body-large {
+    font-weight: 400;
+    font-size: 16pt;
+    line-height: 24pt;
+}
+
+.md-text-body-large-emphasized {
+    font-weight: 500;
+}
+
+.md-text-body-medium {
+    font-weight: 400;
+    font-size: 14pt;
+    line-height: 20pt;
+}
+
+.md-text-body-medium-emphasized {
+    font-weight: 500;
+}
+
+.md-text-body-small {
+    font-weight: 400;
+    font-size: 12pt;
+    line-height: 16pt;
+}
+
+.md-text-body-small-emphasized {
+    font-weight: 500;
+}
+
+/* Label */
+
+.md-text-label-large {
+    font-weight: 500;
+    font-size: 14pt;
+    line-height: 20pt;
+}
+
+.md-text-label-large-emphasized {
+    font-weight: 700;
+}
+
+.md-text-label-medium {
+    font-weight: 500;
+    font-size: 12pt;
+    line-height: 16pt;
+}
+
+.md-text-label-medium-emphasized {
+    font-weight: 700;
+}
+
+.md-text-label-small {
+    font-weight: 500;
+    font-size: 11pt;
+    line-height: 16pt;
+}
+
+.md-text-label-small-emphasized {
+    font-weight: 700;
+}

@@ -1,0 +1,7 @@
+{
+  "files": [],
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }, {"path": "./tsconfig.web.test.json"}],
+  "compilerOptions": {
+    "typeRoots": ["./types", "./node_modules/@types"]
+  }
+}

@@ -1,0 +1,16 @@
+name: 'Run CI Docker container'
+description: 'Download Docker image archive and runs it as a container.'
+runs:
+  using: "composite"
+  steps:
+    - name: Download CI image
+      uses: actions/download-artifact@v4
+      with:
+        name: docker-ci-image
+    - name: Run CI container
+      shell: bash
+      run:  |
+        chmod +x -R scripts/
+        docker load -i=ci-image.tar
+        docker run -v="$(pwd):/home/workspace" -dt --name="prompt-library" "prompt-library" "/bin/bash"
+        docker exec prompt-library bash -c "cd prompt-library && npm install"
