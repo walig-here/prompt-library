@@ -1,0 +1,22 @@
+name: "Deploy"
+on:
+    push:
+        tags: 
+            - '*'
+jobs:
+    update_docker_image:
+        runs-on: ubuntu-22.04
+        name: "Update `latest` docker development image"
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: Build image and push it to DockerHub
+              env:
+                  DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+                  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+              run: |
+                docker build . -t walig/prompt-library:latest
+                echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
+                docker push walig/prompt-library:latest 
