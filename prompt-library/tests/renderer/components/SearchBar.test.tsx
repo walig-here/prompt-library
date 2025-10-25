@@ -107,7 +107,6 @@ describe('clicking buttons', () => {
             />
         )
         const firstTrailingIcon = screen.getByText(/icon/i)
-        console.log(firstTrailingIcon)
 
         await user.click(firstTrailingIcon)
 
@@ -144,7 +143,6 @@ describe('clicking buttons', () => {
                 secondTrailingIcon={{ iconName: 'trailing_2', onIconClicked: customCallback }}
             />
         )
-        screen.debug()
         const secondTrailingIcon = screen.getByText(/trailing_2/i)
 
         await user.click(secondTrailingIcon)
@@ -164,7 +162,6 @@ describe('clicking buttons', () => {
                 secondTrailingIcon={{ iconName: 'trailing_2' }}
             />
         )
-        screen.debug()
         const secondTrailingIcon = screen.getByText(/trailing_2/i)
 
         await user.click(secondTrailingIcon)
