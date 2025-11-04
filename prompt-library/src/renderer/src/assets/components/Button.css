@@ -234,3 +234,24 @@
 .md-button-outlined:hover::before {
     background-color: color-mix(in srgb, var(--color-on-surface-variant) 8%, transparent);
 }
+
+
+.md-button-filled-error {
+    background-color: var(--color-error);
+    border-color: var(--color-error);
+    color: var(--color-on-primary);
+}
+
+.md-button-filled-error:disabled {
+    background-color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+    border-color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
+}
+
+.md-button-filled-error:hover::before {
+    background-color: color-mix(in srgb, var(--color-on-primary) 8%, transparent);
+}
+
+.md-button-filled-error:active::before {
+    background-color: color-mix(in srgb, var(--color-on-primary) 10%, transparent);
+}

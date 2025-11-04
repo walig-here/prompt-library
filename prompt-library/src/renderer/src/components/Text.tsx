@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextProps, TextSize, TextType } from './props/TextProps'
+import { TextColor, TextProps, TextSize, TextType } from './props/TextProps'
 import '../assets/components/Text.css'
 
 /**
@@ -14,9 +14,10 @@ const Text: React.FunctionComponent<TextProps> = ({
     size = TextSize.medium,
     type = TextType.body,
     isEmphasized = false,
-    isSerif = false
+    isSerif = false,
+    color = TextColor.default
 }) => {
-    const style = _getTextStyles(size, type, isEmphasized, isSerif)
+    const style = _getTextStyles(size, type, isEmphasized, isSerif, color)
 
     return <p className={style}>{children}</p>
 }
@@ -25,9 +26,10 @@ function _getTextStyles(
     size: TextSize,
     type: TextType,
     isEmphasized: boolean,
-    isSerif: boolean
+    isSerif: boolean,
+    color: TextColor
 ): string {
-    const sizeAndTypeStyle = `${type.valueOf()}-${size.valueOf()}`
+    const sizeAndTypeStyle = `${type.valueOf()}-${size.valueOf()} ${color.valueOf()}`
     const emphasizeStyle = isEmphasized ? `${sizeAndTypeStyle}-emphasized` : ''
     return `${sizeAndTypeStyle} ${emphasizeStyle} ${isSerif ? 'serif' : ''}`
 }

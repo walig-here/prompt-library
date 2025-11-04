@@ -4,6 +4,16 @@
     font-family: 'Roboto serif', serif;
 }
 
+/* Color */
+
+.md-text-color-variant {
+    color: var(--color-on-surface-variant);
+}
+
+.md-text-color-error {
+    color: var(--color-on-error-container);
+}
+
 /* Display */
 
 .md-text-display-large {

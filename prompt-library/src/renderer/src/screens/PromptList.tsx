@@ -11,6 +11,10 @@ import {
 import '../assets/screens/PromptList.css'
 import IconButton from '../components/IconButton'
 import SearchBar from '../components/SearchBar'
+import PromptListItem from '../components/PromptListItem'
+import { PromptListItemMode, PromptListItemProps } from '../components/props/PromptItemProps'
+import Checkbox from '../components/Checkbox'
+import { CheckboxState } from '../components/props/CheckboxProps'
 
 const REFRESH_BUTTON_LABEL = 'Refresh'
 const NEW_PROMPT_LABEL = 'New prompt'
@@ -28,15 +32,40 @@ const BROWSE_PROMPT_FILES_ICON = 'file_open'
  * it's just removal.
  */
 const PromptList: React.FunctionComponent<EmptyProps> = () => {
-    const [prompts, setPrompts] = useState<PromptListItem[]>([])
-    const [filteredPrompts, setFilteredPrompts] = useState<PromptListItem[]>(prompts)
+    const [prompts, setPrompts] = useState<PromptListItemProps[]>([])
+    const [filteredPrompts, setFilteredPrompts] = useState<PromptListItemProps[]>(prompts)
+
+    const _reloadPrompts = (): void => {
+        setPrompts([
+            {
+                mode: PromptListItemMode.SELECTABLE,
+                promptFilePath: '/file1.txt',
+                title: 'Prompt 1'
+            },
+            {
+                mode: PromptListItemMode.SELECTABLE,
+                promptFilePath: '/file2.txt',
+                title: 'Prompt 2'
+            }
+        ])
+    }
+
+    useEffect(() => {
+        _reloadPrompts()
+    }, [])
 
     useEffect(() => {
         setFilteredPrompts(prompts)
     }, [prompts])
 
     const _onRefreshButtonClicked: React.MouseEventHandler<HTMLButtonElement> = () => {
-        setPrompts([])
+        _reloadPrompts()
+    }
+
+    const _deselectAllPrompts = (): void => {
+        setFilteredPrompts((prevPrompts) =>
+            prevPrompts.map((prompt) => ({ ...prompt, mode: PromptListItemMode.SELECTABLE }))
+        )
     }
 
     return (
@@ -82,14 +111,92 @@ const PromptList: React.FunctionComponent<EmptyProps> = () => {
                 }
                 placeholder={SEARCH_BAR_PLACEHOLDER}
             />
-            <Text>
-                Found <b>{filteredPrompts.length}</b> matching prompts
-            </Text>
-            {filteredPrompts.map((prompt, index) => (
-                <div key={index}>{prompt.title}</div>
-            ))}
+            <div>
+                <div>
+                    <Text>
+                        Found <b>{filteredPrompts.length}</b> matching prompts
+                    </Text>
+                    {filteredPrompts.some(
+                        (prompt) => prompt.mode === PromptListItemMode.SELECTED
+                    ) && (
+                        <div>
+                            <Button
+                                label="Cancel"
+                                color={ButtonColor.outlined}
+                                shape={ButtonShape.square}
+                                onClick={_deselectAllPrompts}
+                            />
+                            <Button
+                                label="Delete selected"
+                                icon_name="delete"
+                                color={ButtonColor.filledError}
+                                shape={ButtonShape.square}
+                            />
+                        </div>
+                    )}
+                </div>
+                {filteredPrompts.map((prompt, index) => (
+                    <PromptListItem
+                        mode={prompt.mode}
+                        title={prompt.title}
+                        promptFilePath={prompt.promptFilePath}
+                        key={index}
+                        onClick={() => console.log(`click ${index}`)}
+                        onEditClick={() => console.log(`edit ${index}`)}
+                        onRemoveClick={() => console.log(`remove ${index}`)}
+                        onSelectionChanged={() =>
+                            setFilteredPrompts((prevPrompts) =>
+                                _onPromptSelected(index, prevPrompts)
+                            )
+                        }
+                    />
+                ))}
+                <Checkbox state={CheckboxState.unchecked} />
+            </div>
         </div>
     )
+}
+
+const _onPromptSelected = (
+    selectedPromptIndex: number,
+    filteredPrompts: PromptListItemProps[]
+): PromptListItemProps[] => {
+    // Entering selection mode
+    if (filteredPrompts.every((prompt) => prompt.mode === PromptListItemMode.SELECTABLE)) {
+        return filteredPrompts.map((prompt, index) => ({
+            ...prompt,
+            mode:
+                index === selectedPromptIndex
+                    ? PromptListItemMode.SELECTED
+                    : PromptListItemMode.DESELECTED
+        }))
+    }
+
+    const changedIndexSelected =
+        filteredPrompts[selectedPromptIndex].mode === PromptListItemMode.SELECTED
+    const otherIndiciesNotSelected = filteredPrompts.every(
+        (prompt, index) =>
+            index === selectedPromptIndex || prompt.mode === PromptListItemMode.DESELECTED
+    )
+
+    // Exiting selection mode
+    if (otherIndiciesNotSelected && changedIndexSelected) {
+        return filteredPrompts.map((prompt) => ({
+            ...prompt,
+            mode: PromptListItemMode.SELECTABLE
+        }))
+    }
+
+    // Remaining in selection mode
+    return filteredPrompts.map((prompt, index) => ({
+        ...prompt,
+        mode:
+            index === selectedPromptIndex
+                ? changedIndexSelected
+                    ? PromptListItemMode.DESELECTED
+                    : PromptListItemMode.SELECTED
+                : prompt.mode
+    }))
 }
 
 function _onNewPromptButtonClicked(event: React.MouseEvent<HTMLButtonElement>): void {

@@ -81,6 +81,21 @@
     background-color: color-mix(in srgb, var(--color-on-surface-variant) 8%, transparent);
 }
 
+.md-button-outlined-error-icon {
+    background-color: color-mix(in srgb, red 0%, transparent);
+    border-width: 1px;
+    border-color: var(--color-outline-variant);
+    color: var(--color-on-error-container);
+}
+
+.md-button-outlined-error-icon:disabled {
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
+}
+
+.md-button-outlined-error-icon:hover::before {
+    background-color: color-mix(in srgb, var(--color-on-surface-variant) 8%, transparent);
+}
+
 /* Size */
 
 .md-button-extra-small-icon {

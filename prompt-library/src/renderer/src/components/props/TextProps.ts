@@ -6,6 +6,7 @@ export interface TextProps {
     size?: TextSize
     isEmphasized?: boolean
     isSerif?: boolean
+    color?: TextColor
 }
 
 export enum TextType {
@@ -20,4 +21,10 @@ export enum TextSize {
     large = 'large',
     medium = 'medium',
     small = 'small'
+}
+
+export enum TextColor {
+    default = '',
+    variant = 'md-text-color-variant',
+    error = 'md-text-color-error'
 }

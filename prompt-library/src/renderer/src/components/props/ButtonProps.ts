@@ -36,7 +36,8 @@ export enum ButtonColor {
     filled = 'md-button-filled',
     tonal = 'md-button-tonal',
     outlined = 'md-button-outlined',
-    text = 'md-button-text'
+    text = 'md-button-text',
+    filledError = 'md-button-filled-error'
 }
 
 export enum IconButtonWidth {
@@ -49,5 +50,6 @@ export enum IconButtonColor {
     filled = 'md-button-filled-icon',
     tonal = 'md-button-tonal-icon',
     outlined = 'md-button-outlined-icon',
-    standard = 'md-button-standard-icon'
+    standard = 'md-button-standard-icon',
+    outlinedError = 'md-button-outlined-error-icon'
 }
