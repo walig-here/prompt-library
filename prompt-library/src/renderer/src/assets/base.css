@@ -10,6 +10,9 @@
     --color-secondary-container: #F5E0BB;
     --color-surface-container-high: #F1E7D9;
     --color-error-container: #FFDAD6;
+    --color-surface-container-highest: #DFE4DC;
+    --color-surface-container-high: #E5EAE2;
+    --color-surface-container: #F1E7D9;
     --color-surface-container-low: #fdf2e5;
     --color-surface-container-lowest: #FFFFFF;
     --color-outline: #7F7667;
@@ -17,7 +20,11 @@
     --color-error: #BA1A1A;
     --color-surface-bright: #FFF8F2;
     --color-shadow: #0000;
-
+    --color-scrim: #000000;
+    --color-inverse-surface: rgb(53 48 39);
+    --color-inverse-primary: rgb(234 193 108);
+    
+    --color-inverse-on-surface: rgb(250 239 226);
     --color-on-primary: #FFFFFF;
     --color-on-background: #1F1B13;
     --color-on-surface-variant: #4d4639;

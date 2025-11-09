@@ -1,14 +1,16 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
   "include": [
-    "tests/**/*.ts",
     "tests/renderer/**/*",
+    "tests/mocks/**/*.ts",
     "tests/renderer/**/*.tsx",
     "src/renderer/src/env.d.ts",
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.tsx",
-    "types/**/*.d.ts",
-    "vitest.config.ts"
+    "types/**/renderer.d.ts",
+    "vitest.config.ts",
+    "src/preload/preload.d.ts",
+    "src/common/**/*"
   ],
   "compilerOptions": {
     "composite": true,

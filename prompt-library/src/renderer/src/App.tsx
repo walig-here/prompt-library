@@ -1,31 +1,21 @@
-import { Outlet } from 'react-router'
-import Text from './components/Text'
-import React from 'react'
-import './assets/base.css'
+import './assets/main.css'
+
+import { Route, Routes } from 'react-router'
+import Body from './Body'
+import PromptList from './screens/PromptList'
+import PromptEditor from './screens/PromptEditor'
+import PromptFill from './screens/PromptFill'
 
 const App: React.FunctionComponent<EmptyProps> = () => {
+    // Using hash router here because Electron is a local file server and no web requests should be sent
     return (
-        <div className="main-content">
-            <Text>Hello world!</Text>
-            <ul>
-                <li>
-                    <a href="#/">
-                        <Text>Prompt list</Text>
-                    </a>
-                </li>
-                <li>
-                    <a href="#/editor">
-                        <Text>Prompt editor</Text>
-                    </a>
-                </li>
-                <li>
-                    <a href="#/filler">
-                        <Text>Prompt filler</Text>
-                    </a>
-                </li>
-            </ul>
-            <Outlet />
-        </div>
+        <Routes>
+            <Route path="/" element={<Body />}>
+                <Route index element={<PromptList />} />
+                <Route path="editor" element={<PromptEditor />} />
+                <Route path="filler" element={<PromptFill />} />
+            </Route>
+        </Routes>
     )
 }
 

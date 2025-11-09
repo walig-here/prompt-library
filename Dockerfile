@@ -60,3 +60,5 @@ RUN apt-get install -y \
     openjdk-8-jre \
     fluxbox
 RUN npm install -g typescript
+
+RUN useradd 'ci'

@@ -1,9 +1,8 @@
 import React from 'react'
 
-export interface SearchBarProps<T> {
-    collection: T[]
-    onSearched: (result: T[]) => void
-    searchStrategy: (query: string, collection: T[]) => T[]
+export interface SearchBarProps {
+    query: string
+    onChanged: React.ChangeEventHandler<HTMLInputElement>
     onLeadingIconClicked?: React.MouseEventHandler<HTMLButtonElement>
     avatar?: SearchBarAvatar
     firstTrailingIcon?: SearchBarTrainilngIcon

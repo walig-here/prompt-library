@@ -9,6 +9,7 @@ export default defineConfig({
             include: ['src/**/*.{ts,tsx}'],
             reporter: ['text', 'html'],
             reportsDirectory: 'coverage'
-        }
+        },
+        setupFiles: ['tests/setup.ts']
     }
 })

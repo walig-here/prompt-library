@@ -1,37 +1,44 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest'
 import SearchBar from '../../../src/renderer/src/components/SearchBar'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 import defineMockedGoogleApiResponses from '../../mocks/materialSymbolsApi'
 import userEvent from '@testing-library/user-event'
-import React, { useState } from 'react'
+
+describe('changing query', () => {
+    const user = userEvent.setup()
+    const onChangeCallbackMock = vi.fn()
+
+    test('change callback should be called each time when user writes in search input', async () => {
+        // Arrange
+        render(<SearchBar query="" onChanged={onChangeCallbackMock} />)
+
+        // Act
+        await user.type(screen.getByRole('search'), 'abc')
+
+        // Assert
+        expect(onChangeCallbackMock).toBeCalledTimes(3)
+    })
+})
 
 describe('clicking buttons', () => {
-    const testCollection: TestObject[] = []
-    const searchCallbacks = {
-        searchStrategy: (query: string, collection: TestObject[]): TestObject[] =>
-            collection.filter((item) => item.name === query),
-        onSearched: (result: TestObject[]): void => {
-            result.values()
-        }
+    const callbacks = {
+        onChanged: (): void => {}
     }
-    const searchStrategySpy = vi.spyOn(searchCallbacks, 'searchStrategy')
-    const onSearchSpy = vi.spyOn(searchCallbacks, 'onSearched')
+    const onChangedSpy = vi.spyOn(callbacks, 'onChanged')
     const customCallback = vi.fn()
     const user = userEvent.setup()
 
     beforeEach(() => {
         customCallback.mockClear()
-        searchStrategySpy.mockClear()
-        onSearchSpy.mockClear()
+        onChangedSpy.mockClear()
     })
 
     test('custom leading icon callback should execute when leading icon with custom callback defined is clicked', async () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={searchCallbacks.onSearched}
-                searchStrategy={searchCallbacks.searchStrategy}
+                query=""
+                onChanged={callbacks.onChanged}
                 onLeadingIconClicked={customCallback}
             />
         )
@@ -40,34 +47,25 @@ describe('clicking buttons', () => {
         await user.click(leadingIcon)
 
         expect(customCallback).toHaveBeenCalledOnce()
-        expect(searchStrategySpy).not.toHaveBeenCalled()
-        expect(onSearchSpy).not.toHaveBeenCalled()
+        expect(onChangedSpy).not.toHaveBeenCalled()
     })
 
-    test('search should be performed when leading icon with no callback defined is clicked', async () => {
-        render(
-            <SearchBar
-                collection={testCollection}
-                onSearched={searchCallbacks.onSearched}
-                searchStrategy={searchCallbacks.searchStrategy}
-            />
-        )
+    test('nothing should happen when leading icon with no callback defined is clicked', async () => {
+        render(<SearchBar query="" onChanged={callbacks.onChanged} />)
         const leadingIcon = screen.getByRole('button')
 
         await user.click(leadingIcon)
 
         expect(customCallback).not.toHaveBeenCalledOnce()
-        expect(searchStrategySpy).toHaveBeenCalled()
-        expect(onSearchSpy).toHaveBeenCalled()
+        expect(onChangedSpy).not.toHaveBeenCalled()
     })
 
     test('custom avatar callback should execute when avatar with custom callback defined is clicked', async () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={searchCallbacks.onSearched}
-                searchStrategy={searchCallbacks.searchStrategy}
-                avatar={{ uri: '', onAvatarClicked: customCallback }}
+                query=""
+                onChanged={callbacks.onChanged}
+                avatar={{ uri: ' ', onAvatarClicked: customCallback }}
             />
         )
         const avatar = screen.getByRole('img')
@@ -75,34 +73,24 @@ describe('clicking buttons', () => {
         await user.click(avatar)
 
         expect(customCallback).toHaveBeenCalledOnce()
-        expect(searchStrategySpy).not.toHaveBeenCalled()
-        expect(onSearchSpy).not.toHaveBeenCalled()
+        expect(onChangedSpy).not.toHaveBeenCalled()
     })
 
-    test('search should be performed when avatar with no callback defined is clicked', async () => {
-        render(
-            <SearchBar
-                collection={testCollection}
-                onSearched={searchCallbacks.onSearched}
-                searchStrategy={searchCallbacks.searchStrategy}
-                avatar={{ uri: '' }}
-            />
-        )
+    test('nothing should happen when avatar with no callback defined is clicked', async () => {
+        render(<SearchBar query="" onChanged={callbacks.onChanged} avatar={{ uri: ' ' }} />)
         const avatar = screen.getByRole('img')
 
         await user.click(avatar)
 
         expect(customCallback).not.toHaveBeenCalledOnce()
-        expect(searchStrategySpy).toHaveBeenCalled()
-        expect(onSearchSpy).toHaveBeenCalled()
+        expect(onChangedSpy).not.toHaveBeenCalled()
     })
 
     test('custom callback should be perfomred when first trailing icon with custom callback defined is clicked', async () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={searchCallbacks.onSearched}
-                searchStrategy={searchCallbacks.searchStrategy}
+                query=""
+                onChanged={callbacks.onChanged}
                 firstTrailingIcon={{ iconName: 'icon', onIconClicked: customCallback }}
             />
         )
@@ -111,16 +99,14 @@ describe('clicking buttons', () => {
         await user.click(firstTrailingIcon)
 
         expect(customCallback).toHaveBeenCalledOnce()
-        expect(searchStrategySpy).not.toHaveBeenCalled()
-        expect(onSearchSpy).not.toHaveBeenCalled()
+        expect(onChangedSpy).not.toHaveBeenCalled()
     })
 
-    test('search should be performed when first trailing icon with no callback defined is clicked', async () => {
+    test('nothing should happen when first trailing icon with no callback defined is clicked', async () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={searchCallbacks.onSearched}
-                searchStrategy={searchCallbacks.searchStrategy}
+                query=""
+                onChanged={callbacks.onChanged}
                 firstTrailingIcon={{ iconName: 'icon' }}
             />
         )
@@ -129,16 +115,14 @@ describe('clicking buttons', () => {
         await user.click(firstTrailingIcon)
 
         expect(customCallback).not.toHaveBeenCalledOnce()
-        expect(searchStrategySpy).toHaveBeenCalled()
-        expect(onSearchSpy).toHaveBeenCalled()
+        expect(onChangedSpy).not.toHaveBeenCalled()
     })
 
     test('custom callback should be perfomred when second trailing icon with custom callback defined is clicked', async () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={searchCallbacks.onSearched}
-                searchStrategy={searchCallbacks.searchStrategy}
+                onChanged={callbacks.onChanged}
+                query=""
                 firstTrailingIcon={{ iconName: 'trailing_1' }}
                 secondTrailingIcon={{ iconName: 'trailing_2', onIconClicked: customCallback }}
             />
@@ -148,16 +132,14 @@ describe('clicking buttons', () => {
         await user.click(secondTrailingIcon)
 
         expect(customCallback).toHaveBeenCalledOnce()
-        expect(searchStrategySpy).not.toHaveBeenCalled()
-        expect(onSearchSpy).not.toHaveBeenCalled()
+        expect(onChangedSpy).not.toHaveBeenCalled()
     })
 
-    test('search should be performed when second trailing icon with no callback defined is clicked', async () => {
+    test('nothing should happen when second trailing icon with no callback defined is clicked', async () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={searchCallbacks.onSearched}
-                searchStrategy={searchCallbacks.searchStrategy}
+                query=""
+                onChanged={callbacks.onChanged}
                 firstTrailingIcon={{ iconName: 'trailing_1' }}
                 secondTrailingIcon={{ iconName: 'trailing_2' }}
             />
@@ -167,170 +149,37 @@ describe('clicking buttons', () => {
         await user.click(secondTrailingIcon)
 
         expect(customCallback).not.toHaveBeenCalledOnce()
-        expect(searchStrategySpy).toHaveBeenCalled()
-        expect(onSearchSpy).toHaveBeenCalled()
-    })
-})
-
-describe('resetting', () => {
-    const collection: TestObject[] = [
-        { name: 'test 1a' },
-        { name: 'avxc' },
-        { name: 'pdsta3e' },
-        { name: 'xyza' }
-    ]
-
-    test('query string should be cleared when queried collection changes', async () => {
-        const user = userEvent.setup()
-        const TestParent: React.FunctionComponent<EmptyProps> = () => {
-            const [parentCollection, setParentCollection] = useState<TestObject[]>(collection)
-
-            return (
-                <>
-                    <button
-                        onClick={() =>
-                            setParentCollection((parentCollection) => parentCollection.slice(0, -1))
-                        }
-                    >
-                        Modify collection
-                    </button>
-                    <SearchBar
-                        collection={parentCollection}
-                        searchStrategy={(query: string, collection: TestObject[]): TestObject[] => {
-                            return collection.filter((item) => item.name.includes(query))
-                        }}
-                        onSearched={(result: TestObject[]) => {
-                            result.length.valueOf()
-                        }}
-                    />
-                </>
-            )
-        }
-        render(<TestParent />)
-        const searchBar = screen.getByRole('textbox')
-
-        await user.type(searchBar, 'abc{enter}')
-        screen.getByDisplayValue('abc')
-        await user.click(screen.getByText(/modify collection/i))
-
-        await waitFor(() => {
-            const updatedSearchBar = screen.queryByDisplayValue('')
-            expect(updatedSearchBar).toBeInTheDocument()
-        })
-    })
-})
-
-describe('searching', () => {
-    const collection: TestObject[] = [
-        { name: 'test 1a' },
-        { name: 'avxc' },
-        { name: 'pdsta3e' },
-        { name: 'xyza' }
-    ]
-
-    test('only matching objects from collection should be returned when user inputs and confirms pattern', async () => {
-        let actualResult: TestObject[] = []
-        const user = userEvent.setup()
-        render(
-            <SearchBar
-                collection={collection}
-                searchStrategy={(query: string, collection: TestObject[]): TestObject[] => {
-                    return collection.filter((item) => item.name.includes(query))
-                }}
-                onSearched={(result: TestObject[]) => {
-                    actualResult = result
-                }}
-            />
-        )
-        const searchBar = screen.getByRole('textbox')
-
-        await user.type(searchBar, 'st{enter}')
-
-        expect(actualResult).containSubset([{ name: 'test 1a' }, { name: 'pdsta3e' }])
-    })
-
-    test('no objects from collection should be returned when user input but not confirms pattern', async () => {
-        let actualResult: TestObject[] = []
-        const user = userEvent.setup()
-        render(
-            <SearchBar
-                collection={collection}
-                searchStrategy={(query: string, collection: TestObject[]): TestObject[] => {
-                    return collection.filter((item) => item.name.includes(query))
-                }}
-                onSearched={(result: TestObject[]) => {
-                    actualResult = result
-                }}
-            />
-        )
-        const searchBar = screen.getByRole('textbox')
-
-        await user.type(searchBar, 'st')
-
-        expect(actualResult.length).toBe(0)
-    })
-
-    test('no object from collection should be returned when user inputs pattern that matches no object', async () => {
-        let actualResult: TestObject[] = [{ name: 'a' }]
-        const user = userEvent.setup()
-        render(
-            <SearchBar
-                collection={collection}
-                searchStrategy={(query: string, collection: TestObject[]): TestObject[] => {
-                    return collection.filter((item) => item.name.includes(query))
-                }}
-                onSearched={(result: TestObject[]) => {
-                    actualResult = result
-                }}
-            />
-        )
-        const searchBar = screen.getByRole('textbox')
-
-        await user.type(searchBar, 'R{enter}')
-
-        expect(actualResult.length).toBe(0)
-    })
-
-    test('whole collection should be returned when user inputs pattern that maches each object', async () => {
-        let actualResult: TestObject[] = []
-        const user = userEvent.setup()
-        render(
-            <SearchBar
-                collection={collection}
-                searchStrategy={(query: string, collection: TestObject[]): TestObject[] => {
-                    return collection.filter((item) => item.name.includes(query))
-                }}
-                onSearched={(result: TestObject[]) => {
-                    actualResult = result
-                }}
-            />
-        )
-        const searchBar = screen.getByRole('textbox')
-
-        await user.type(searchBar, 'a{enter}')
-
-        expect(actualResult).toStrictEqual(collection)
+        expect(onChangedSpy).not.toHaveBeenCalled()
     })
 })
 
 describe('render search bar', () => {
-    const testCollection: { name: string }[] = []
     const emptyClickEventHanlder = (): void => {}
-    const testSearchStrategy = (
-        query: string,
-        collection: { name: string }[]
-    ): { name: string }[] => collection.filter((item) => item.name === query)
+
+    test('value from query should be assigned to input', () => {
+        // Arrange & Act
+        render(
+            <SearchBar
+                query="test-query"
+                onChanged={() => {}}
+                avatar={{ uri: 'image.png', onAvatarClicked: emptyClickEventHanlder }}
+            />
+        )
+
+        // Assert
+        const searchInput: HTMLInputElement = screen.getByRole('search')
+        expect(searchInput.value).toBe('test-query')
+    })
 
     test('leading icon and trailing avatar are rendered when only avatar data is passed', () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={(result) => result}
-                searchStrategy={testSearchStrategy}
+                query=""
+                onChanged={() => {}}
                 avatar={{ onAvatarClicked: emptyClickEventHanlder, uri: 'image.png' }}
             />
         )
-        const searchBar = screen.getByRole('form')
+        const searchBar = screen.getByRole('searchbox')
         const iconButtons = screen.getAllByRole('button')
         const avatar = screen.getAllByRole('img')
 
@@ -342,13 +191,12 @@ describe('render search bar', () => {
     test('leading icon and trailing icon are rendered when only first trailing icon data is passed', () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={(result) => result}
-                searchStrategy={testSearchStrategy}
+                query=""
+                onChanged={() => {}}
                 firstTrailingIcon={{ iconName: 'icon', onIconClicked: emptyClickEventHanlder }}
             />
         )
-        const searchBar = screen.getByRole('form')
+        const searchBar = screen.getByRole('searchbox')
         const iconButtons = screen.getAllByRole('button')
         const avatar = screen.queryAllByRole('img')
 
@@ -360,13 +208,12 @@ describe('render search bar', () => {
     test('leading icon is rendered when only second trailing icon data is passed', () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={(result) => result}
-                searchStrategy={testSearchStrategy}
+                query=""
+                onChanged={() => {}}
                 secondTrailingIcon={{ iconName: 'icon', onIconClicked: emptyClickEventHanlder }}
             />
         )
-        const searchBar = screen.getByRole('form')
+        const searchBar = screen.getByRole('searchbox')
         const iconButtons = screen.getAllByRole('button')
         const avatar = screen.queryAllByRole('img')
 
@@ -376,14 +223,8 @@ describe('render search bar', () => {
     })
 
     test("leading icon is rendered when only no elements' data is passed", () => {
-        render(
-            <SearchBar
-                collection={testCollection}
-                onSearched={(result) => result}
-                searchStrategy={testSearchStrategy}
-            />
-        )
-        const searchBar = screen.getByRole('form')
+        render(<SearchBar query="" onChanged={() => {}} />)
+        const searchBar = screen.getByRole('searchbox')
         const iconButtons = screen.getAllByRole('button')
         const avatar = screen.queryAllByRole('img')
 
@@ -395,15 +236,14 @@ describe('render search bar', () => {
     test("leading icon is rendered when only all elements' data is passed", () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={(result) => result}
-                searchStrategy={testSearchStrategy}
+                query=""
+                onChanged={() => {}}
                 avatar={{ onAvatarClicked: emptyClickEventHanlder, uri: 'image.png' }}
                 firstTrailingIcon={{ iconName: 'icon', onIconClicked: emptyClickEventHanlder }}
                 secondTrailingIcon={{ iconName: 'icon', onIconClicked: emptyClickEventHanlder }}
             />
         )
-        const searchBar = screen.getByRole('form')
+        const searchBar = screen.getByRole('searchbox')
         const iconButtons = screen.getAllByRole('button')
         const avatar = screen.queryAllByRole('img')
 
@@ -415,14 +255,13 @@ describe('render search bar', () => {
     test('leading icon and 2 trailing icons are rendered when only both trailing icons data is passed', () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={(result) => result}
-                searchStrategy={testSearchStrategy}
+                query=""
+                onChanged={() => {}}
                 firstTrailingIcon={{ iconName: 'icon', onIconClicked: emptyClickEventHanlder }}
                 secondTrailingIcon={{ iconName: 'icon', onIconClicked: emptyClickEventHanlder }}
             />
         )
-        const searchBar = screen.getByRole('form')
+        const searchBar = screen.getByRole('searchbox')
         const iconButtons = screen.getAllByRole('button')
         const avatar = screen.queryAllByRole('img')
 
@@ -434,14 +273,13 @@ describe('render search bar', () => {
     test('leading icon and 1 trailing icon and trailing avatar are rendered when only first trailing icon and avatar data is passed', () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={(result) => result}
-                searchStrategy={testSearchStrategy}
                 firstTrailingIcon={{ iconName: 'icon', onIconClicked: emptyClickEventHanlder }}
+                query=""
+                onChanged={() => {}}
                 avatar={{ onAvatarClicked: emptyClickEventHanlder, uri: 'image.png' }}
             />
         )
-        const searchBar = screen.getByRole('form')
+        const searchBar = screen.getByRole('searchbox')
         const iconButtons = screen.getAllByRole('button')
         const avatar = screen.getAllByRole('img')
 
@@ -453,14 +291,13 @@ describe('render search bar', () => {
     test('leading icon and 1 trailing icon and trailing avatar are rendered when only second trailing icon and avatar data is passed', () => {
         render(
             <SearchBar
-                collection={testCollection}
-                onSearched={(result) => result}
-                searchStrategy={testSearchStrategy}
                 secondTrailingIcon={{ iconName: 'icon', onIconClicked: emptyClickEventHanlder }}
+                query=""
+                onChanged={() => {}}
                 avatar={{ onAvatarClicked: emptyClickEventHanlder, uri: 'image.png' }}
             />
         )
-        const searchBar = screen.getByRole('form')
+        const searchBar = screen.getByRole('searchbox')
         const iconButtons = screen.getAllByRole('button')
         const avatar = screen.getAllByRole('img')
 
@@ -469,10 +306,6 @@ describe('render search bar', () => {
         expect(avatar.length).toBe(1)
     })
 })
-
-interface TestObject {
-    name: string
-}
 
 const materialSymbolsApiMock = defineMockedGoogleApiResponses([])
 

@@ -11,3 +11,29 @@
     align-items: center;
     column-gap: 3px;
 }
+
+.prompt-list-items {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.prompt-list-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px 10px 5px 10px;
+}
+
+.prompt-list-action-buttons {
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+}
+
+.prompt-list-body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 60px 0px 60px 0px;
+}

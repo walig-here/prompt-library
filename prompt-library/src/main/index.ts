@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { definePromptApiHandlers } from './promptsApiHandlers'
 
 async function createWindow(): Promise<void> {
     const mainWindow = new BrowserWindow({
@@ -42,7 +43,7 @@ app.whenReady()
             optimizer.watchWindowShortcuts(window)
         })
 
-        ipcMain.on('ping', () => console.log('pong'))
+        definePromptApiHandlers()
 
         createWindow().catch(onWindowCreationFailed)
 

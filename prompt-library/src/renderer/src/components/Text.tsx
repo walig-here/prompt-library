@@ -19,7 +19,13 @@ const Text: React.FunctionComponent<TextProps> = ({
 }) => {
     const style = _getTextStyles(size, type, isEmphasized, isSerif, color)
 
-    return <p className={style}>{children}</p>
+    return color === TextColor.error ? (
+        <p className={style} role="alert">
+            {children}
+        </p>
+    ) : (
+        <p className={style}>{children}</p>
+    )
 }
 
 function _getTextStyles(

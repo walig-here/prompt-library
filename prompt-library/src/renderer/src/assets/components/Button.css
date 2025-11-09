@@ -235,7 +235,6 @@
     background-color: color-mix(in srgb, var(--color-on-surface-variant) 8%, transparent);
 }
 
-
 .md-button-filled-error {
     background-color: var(--color-error);
     border-color: var(--color-error);
@@ -254,4 +253,32 @@
 
 .md-button-filled-error:active::before {
     background-color: color-mix(in srgb, var(--color-on-primary) 10%, transparent);
+}
+
+.md-button-text {
+    background-color: color-mix(in srgb, red 0%, transparent);
+    border: none;
+    color: var(--color-primary);
+}
+
+.md-button-text:disabled {
+    color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+}
+
+.md-button-text:hover::before {
+    background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+.md-button-text-inverse-light {
+    background-color: color-mix(in srgb, red 0%, transparent);
+    border: none;
+    color: var(--color-inverse-primary);
+}
+
+.md-button-text-inverse-light:disabled {
+    color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+}
+
+.md-button-text-inverse-light:hover::before {
+    background-color: color-mix(in srgb, var(--color-inverse-primary) 8%, transparent);
 }

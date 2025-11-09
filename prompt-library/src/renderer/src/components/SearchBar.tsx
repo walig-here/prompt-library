@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useState } from 'react'
+import React from 'react'
 import { SearchBarProps } from './props/SearchBarProps'
 import IconButton from './IconButton'
 import { IconButtonColor } from './props/ButtonProps'
@@ -9,13 +9,9 @@ import '../assets/components/SearchBar.css'
  *
  * Specs: https://m3.material.io/components/search/overview
  *
- * Bar would reset when unrelying, searched collection is modified.
+ * ### Query
  *
- * ### Search
- *
- * It uses the `searchStrategy()` in order to search throught collection `collection`. When the search is done then the
- * `onSearched()` is called with search result as an argument. This way you'll get access to the result outside the
- * component (eg. by using the set-state hook in there).
+ * Query is controlled by a parent. The component calls the `onChanged()` callback each time the query is changed.
  *
  * ### Configuration
  *
@@ -31,48 +27,32 @@ import '../assets/components/SearchBar.css'
  * ### Icons' button binds
  *
  * All icons on search bar can have a click callback function passed for them. However, you can decicde to not pass a
- * callback. In such case clicking the icon would result in triggerring the search functionality.
+ * callback.
  */
-const SearchBar = <T extends object>({
-    collection,
-    onSearched,
-    searchStrategy,
+const SearchBar: React.FunctionComponent<SearchBarProps> = ({
+    onChanged,
+    query,
     firstTrailingIcon,
     avatar,
     secondTrailingIcon,
     onLeadingIconClicked = undefined,
     placeholder = ''
-}: SearchBarProps<T>): JSX.Element => {
-    const [query, setQuery] = useState<string>('')
+}) => {
     const allElementsPassed = firstTrailingIcon && secondTrailingIcon && avatar
 
-    useEffect(() => {
-        setQuery('')
-    }, [collection])
-
-    const onQuerySubmitted = (): void => {
-        onSearched(searchStrategy(query, collection))
-    }
-    const onQueryChanged: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        setQuery(event.target.value)
-    }
-
     return (
-        <form
-            aria-label="search"
-            onSubmit={() => onQuerySubmitted()}
-            className="md-search-bar-container"
-        >
+        <div className="md-search-bar-container" role="searchbox">
             <IconButton
                 iconName="search"
                 color={IconButtonColor.standard}
-                onClick={onLeadingIconClicked ? onLeadingIconClicked : () => onQuerySubmitted()}
+                onClick={onLeadingIconClicked ? onLeadingIconClicked : () => {}}
             />
             <input
+                role="search"
                 type="text"
                 placeholder={placeholder}
                 value={query}
-                onChange={onQueryChanged}
+                onChange={onChanged}
                 className="md-search-bar-input"
             />
             {!allElementsPassed && firstTrailingIcon && (
@@ -80,9 +60,7 @@ const SearchBar = <T extends object>({
                     iconName={firstTrailingIcon.iconName}
                     color={IconButtonColor.standard}
                     onClick={
-                        firstTrailingIcon.onIconClicked
-                            ? firstTrailingIcon.onIconClicked
-                            : () => onQuerySubmitted()
+                        firstTrailingIcon.onIconClicked ? firstTrailingIcon.onIconClicked : () => {}
                     }
                 />
             )}
@@ -93,20 +71,18 @@ const SearchBar = <T extends object>({
                     onClick={
                         secondTrailingIcon.onIconClicked
                             ? secondTrailingIcon.onIconClicked
-                            : () => onQuerySubmitted()
+                            : () => {}
                     }
                 />
             )}
             {!allElementsPassed && avatar && (
                 <img
                     src={avatar.uri}
-                    onClick={
-                        avatar.onAvatarClicked ? avatar.onAvatarClicked : () => onQuerySubmitted()
-                    }
+                    onClick={avatar.onAvatarClicked ? avatar.onAvatarClicked : () => {}}
                     className="md-search-bar-avatar"
                 />
             )}
-        </form>
+        </div>
     )
 }
 

@@ -37,7 +37,8 @@ export enum ButtonColor {
     tonal = 'md-button-tonal',
     outlined = 'md-button-outlined',
     text = 'md-button-text',
-    filledError = 'md-button-filled-error'
+    filledError = 'md-button-filled-error',
+    lightInverseText = 'md-button-text-inverse-light'
 }
 
 export enum IconButtonWidth {
@@ -51,5 +52,6 @@ export enum IconButtonColor {
     tonal = 'md-button-tonal-icon',
     outlined = 'md-button-outlined-icon',
     standard = 'md-button-standard-icon',
-    outlinedError = 'md-button-outlined-error-icon'
+    outlinedError = 'md-button-outlined-error-icon',
+    lightInverse = 'md-button-inverse-icon'
 }

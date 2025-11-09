@@ -1,6 +1,7 @@
 import { IconProps } from './props/IconProps'
 import '../assets/components/Icon.css'
 import { useEffect, useState } from 'react'
+import { ensureError } from '../../../common/exceptions'
 
 /**
  * Icon (symbol) that follows M3 principles.
@@ -15,17 +16,27 @@ const Icon: React.FunctionComponent<IconProps> = ({ name, weight = 400, size = 2
     const style = `material-symbols-outlined md-icon-${size}`
 
     useEffect(() => {
+        let ignore: boolean = false
+
         _validateIcon(name)
             .then((isValid) => {
+                if (ignore) return
                 if (!isValid)
                     console.warn(
                         `Icon won't be rendered. Reason: '${name}' is not an existing material symbol`
                     )
                 setIsValid(isValid)
             })
-            .catch(() => {
+            .catch((e) => {
+                const error = ensureError(e)
+                console.warn(`Icon won't be rendered. Reason: '${error.message}'`)
+                if (ignore) return
                 setIsValid(false)
             })
+
+        return () => {
+            ignore = true
+        }
     }, [name])
 
     if (!isValid) {
@@ -67,12 +78,13 @@ async function _validateIcon(iconName: string): Promise<boolean> {
                 `Icon won't be rendered. Got code ${iconRequestResponse.status} for material icon "${iconName}" request.`
             )
         }
-    } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : String(error)
+    } catch (thrownValue: unknown) {
+        const error = ensureError(thrownValue)
+
         console.log(
-            `Icon won't be rendered. Can't fetch material icon "${iconName}" from Google's API. Reason: ${errorMessage}`
+            `Icon won't be rendered. Can't fetch material icon "${iconName}" from Google's API. Reason: ${error.message}`
         )
-        return false // We don't cache this result since it can be temporar network issue and nothing permament
+        return false // We don't cache this result since it can be temporary network issue and nothing permament
     }
 
     _validIconsCache.set(iconName, isValid)

@@ -52,6 +52,7 @@ const PromptListItem: React.FunctionComponent<PromptListItemProps> = ({
 
     return (
         <div
+            role="listitem"
             className={`promt-list-item-container ${mode.valueOf()}`}
             onMouseEnter={() => setActionsVisible(true)}
             onMouseLeave={() => setActionsVisible(false)}
