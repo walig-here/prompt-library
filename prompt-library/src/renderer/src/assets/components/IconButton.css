@@ -24,6 +24,15 @@
 
 /* Color */
 
+.md-button-standard-error-icon {
+    background-color: color-mix(in srgb, red 0%, transparent);
+    color: var(--color-on-error-container);
+}
+
+.md-button-standard-error-icon:hover::before {
+    background-color: color-mix(in srgb, var(--color-on-surface-variant) 8%, transparent);
+}
+
 .md-button-filled-icon {
    background-color: var(--color-primary);
    color: var(--color-on-primary);

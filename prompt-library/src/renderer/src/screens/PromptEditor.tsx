@@ -1,5 +1,10 @@
 import React from 'react'
 import Text from '../components/Text'
+import { TextSize, TextType } from '../components/props/TextProps'
+import Button from '../components/Button'
+import { ButtonColor, ButtonShape } from '../components/props/ButtonProps'
+import { useNavigate } from 'react-router'
+import FormItem from '../components/FormItem'
 
 /**
  * Allows to modify prompt's attributes: it's name and contents.
@@ -9,7 +14,40 @@ import Text from '../components/Text'
  * already exists in the system.
  */
 const PromptEditor: React.FunctionComponent<EmptyProps> = () => {
-    return <Text>Prompt Editor</Text>
+    const navigate = useNavigate()
+
+    return (
+        <div>
+            <div>
+                <Text
+                    type={TextType.display}
+                    size={TextSize.medium}
+                    isEmphasized={true}
+                    isSerif={true}
+                >
+                    Prompt Editor
+                </Text>
+                <div>
+                    <Button
+                        label="Cancel"
+                        color={ButtonColor.outlined}
+                        onClick={() => navigate('/') as void}
+                        shape={ButtonShape.square}
+                    />
+                    <Button label="Save prompt" shape={ButtonShape.square} icon_name="check" />
+                </div>
+            </div>
+            <div>
+                <FormItem value="" label="Name" inputSupportingText="/path" />
+                <FormItem
+                    value=""
+                    label="Content"
+                    description="Enter content of your ptompt. Use ${PLACEHOLDER} to create fillable fields that will be replaced with actual values when you use this prompt."
+                    lines={10}
+                />
+            </div>
+        </div>
+    )
 }
 
 export default PromptEditor

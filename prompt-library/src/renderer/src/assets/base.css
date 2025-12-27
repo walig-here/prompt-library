@@ -10,7 +10,7 @@
     --color-secondary-container: #F5E0BB;
     --color-surface-container-high: #F1E7D9;
     --color-error-container: #FFDAD6;
-    --color-surface-container-highest: #DFE4DC;
+    --color-surface-container-highest: rgb(235 225 212);
     --color-surface-container-high: #E5EAE2;
     --color-surface-container: #F1E7D9;
     --color-surface-container-low: #fdf2e5;

@@ -11,7 +11,11 @@
 }
 
 .md-text-color-error {
-    color: var(--color-on-error-container);
+    color: var(--color-error);
+}
+
+.md-text-color-primary {
+    color: var(--color-primary);
 }
 
 /* Display */

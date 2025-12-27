@@ -53,5 +53,6 @@ export enum IconButtonColor {
     outlined = 'md-button-outlined-icon',
     standard = 'md-button-standard-icon',
     outlinedError = 'md-button-outlined-error-icon',
+    standardError = 'md-button-standard-error-icon',
     lightInverse = 'md-button-inverse-icon'
 }
