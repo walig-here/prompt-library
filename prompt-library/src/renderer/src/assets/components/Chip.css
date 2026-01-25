@@ -1,0 +1,50 @@
+@import url("../base.css");
+
+.md-chip-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 16px;
+    padding-left: 16px;
+    column-gap: 8px;
+    border: solid;
+    width: fit-content;
+    height: 32px;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: var(--color-outline);
+    overflow: hidden;
+    position: relative;
+}
+
+.md-chip-container::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+.md-chip-container:hover::before {
+    background-color: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+    border-color: var(--color-outline-variant);
+    color: var(--color-on-surface);
+}
+
+.md-chip-container:hover {
+    cursor: pointer;
+}
+
+.md-chip-container-with-leading-icon {
+    padding-left: 8px;
+}
+
+.md-chip-container-with-trailing-icon {
+    padding-right: 8px;
+}
+
+.md-chip-container-selected {
+    background-color: var(--color-secondary-container);
+}

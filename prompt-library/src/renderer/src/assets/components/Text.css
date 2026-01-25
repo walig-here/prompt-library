@@ -18,6 +18,10 @@
     color: var(--color-primary);
 }
 
+.md-text-color-secondary {
+    color: var(--color-on-secondary-container);
+}
+
 /* Display */
 
 .md-text-display-large {

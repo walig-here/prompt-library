@@ -27,5 +27,6 @@ export enum TextColor {
     default = '',
     variant = 'md-text-color-variant',
     error = 'md-text-color-error',
-    primary = 'md-text-color-primary'
+    primary = 'md-text-color-primary',
+    secondary = 'md-text-color-secondary'
 }

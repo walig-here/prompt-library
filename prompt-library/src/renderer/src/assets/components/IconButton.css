@@ -114,6 +114,19 @@
     background-color: color-mix(in srgb, var(--color-inverse-on-surface) 8%, transparent);
 }
 
+.md-button-primary-icon {
+    background-color: color-mix(in srgb, red 0%, transparent);
+    color: var(--color-primary);
+}
+
+.md-button-primary-icon:disabled {
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
+}
+
+.md-button-primary-icon:hover::before {
+    background-color: color-mix(in srgb, var(--color-on-surface-variant) 8%, transparent);
+}
+
 /* Size */
 
 .md-button-extra-small-icon {
