@@ -5,6 +5,7 @@ import Button from '../components/Button'
 import { ButtonColor, ButtonShape } from '../components/props/ButtonProps'
 import { useNavigate } from 'react-router'
 import FormItem from '../components/FormItem'
+import PlaceholdersList from '../components/PlaceholdersList'
 
 /**
  * Allows to modify prompt's attributes: it's name and contents.
@@ -39,12 +40,23 @@ const PromptEditor: React.FunctionComponent<EmptyProps> = () => {
             </div>
             <div>
                 <FormItem value="" label="Name" inputSupportingText="/path" />
-                <FormItem
-                    value=""
-                    label="Content"
-                    description="Enter content of your ptompt. Use ${PLACEHOLDER} to create fillable fields that will be replaced with actual values when you use this prompt."
-                    lines={10}
-                />
+                <div>
+                    <FormItem
+                        value=""
+                        label="Content"
+                        description="Enter content of your ptompt. Use ${PLACEHOLDER} to create fillable fields that will be replaced with actual values when you use this prompt."
+                        lines={10}
+                    />
+                    <PlaceholdersList
+                        placeholders={
+                            new Set([{ name: 'dupa' }, { name: 'sraka' }, { name: 'hihi' }])
+                        }
+                        placeholderInteraction={{
+                            iconName: 'edit',
+                            callback: (placeholder) => console.log(placeholder)
+                        }}
+                    />
+                </div>
             </div>
         </div>
     )

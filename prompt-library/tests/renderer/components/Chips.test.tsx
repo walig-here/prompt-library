@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import Chip from '../../../src/renderer/src/components/Chip'
 import { ChipType } from '../../../src/renderer/src/components/props/ChipProps'
-import { describe, expect, test, vi } from 'vitest'
+import { afterAll, beforeAll, describe, expect, test, vi, afterEach } from 'vitest'
 import '@testing-library/jest-dom/vitest'
 import userEvent from '@testing-library/user-event'
+import defineMockedGoogleApiResponses from '../../mocks/materialSymbolsApi'
 
 describe('render', () => {
     const chipWithSurplusProps = new Map(
@@ -322,3 +323,8 @@ describe('user interactions', () => {
         }
     )
 })
+
+const googleApiMock = defineMockedGoogleApiResponses([])
+beforeAll(() => googleApiMock.listen())
+afterAll(() => googleApiMock.close())
+afterEach(() => googleApiMock.resetHandlers())
