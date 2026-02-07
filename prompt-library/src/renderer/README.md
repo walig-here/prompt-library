@@ -21,7 +21,9 @@ Implemented in [`PromptList.tsx`](/prompt-library/src/renderer/src/screens/Promp
 
 ### Prompt editor
 
-Implemented in [`PromptEditor.tsx`](/prompt-library/src/renderer/src/screens/PromptEditor.tsx)
+Implemented in [`PromptEditor.tsx`](/prompt-library/src/renderer/src/screens/PromptEditor.tsx). Follows the state machine diagram presented below:
+
+![state transitions in prompt editor screen](/docs/img/ui/prompt-editor.drawio.svg)
 
 > **Previews:**
 > [*Prompt edit screen*](/docs/img/ui/mock-prompt-editor.pdf)

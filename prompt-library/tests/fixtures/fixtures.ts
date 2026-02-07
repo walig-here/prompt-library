@@ -2,6 +2,7 @@ import { test } from 'vitest'
 import os from 'node:os'
 import path from 'node:path'
 import { mkdtemp, rm, chmod } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
 
 interface FileSystemTestFixtures {
     tmpdir: string
@@ -22,5 +23,17 @@ export const filesystemTest = test.extend<FileSystemTestFixtures>({
 
         await chmod(testTemporaryDir, 0o777)
         await rm(testTemporaryDir, { recursive: true })
+    }
+})
+
+interface TestWithAssetsFixtures {
+    readAsset: (assetKey: string) => Buffer
+}
+
+const assetsDirPath = path.resolve(path.join(__dirname, '../assets'))
+export const testWithAssets = test.extend<TestWithAssetsFixtures>({
+    // eslint-disable-next-line no-empty-pattern
+    readAsset: async ({}, use) => {
+        await use((assetKey: string): Buffer => readFileSync(path.join(assetsDirPath, assetKey)))
     }
 })

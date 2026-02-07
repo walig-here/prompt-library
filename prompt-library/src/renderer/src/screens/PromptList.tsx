@@ -144,7 +144,8 @@ const PromptList: React.FunctionComponent<EmptyProps> = () => {
                 <Dialog
                     mainButton={{
                         label: 'Confirm',
-                        onClick: () => navigate('editor') as void
+                        onClick: () =>
+                            navigate(`editor?prompt=${editDialogData.targetPromptPath}`) as void
                     }}
                     secondaryButton={{
                         label: 'Cancel',

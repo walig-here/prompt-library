@@ -52,7 +52,7 @@ const Dialog: React.FunctionComponent<DialogProps> = ({
                     {supportingText}
                 </Text>
             </div>
-            <div>{children}</div>
+            <div className="md-dialog-children-container">{children}</div>
             <div className="md-dialog-buttons-container">
                 <Button
                     label={mainButton.label}

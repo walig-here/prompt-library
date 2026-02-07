@@ -1,0 +1,36 @@
+@import url('../base.css');
+
+.prompt-editor-body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+    padding: 60px 0px 60px 0px;
+}
+
+.prompt-editor-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.prompt-editor-header-buttons-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 3px;
+}
+
+.prompt-editor-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.prompt-editor-content-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}

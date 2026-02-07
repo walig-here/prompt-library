@@ -6,7 +6,9 @@ const promptsAPI = {
     loadFromFile: (path: string) => ipcRenderer.invoke(PromptApiChannel.LOAD_PROMPT, path),
     listPrompts: () => ipcRenderer.invoke(PromptApiChannel.LIST_PTOMPTS),
     promptTitle: (path: string) => ipcRenderer.invoke(PromptApiChannel.GET_PROMPT_TITLE, path),
-    deletePrompt: (path: string) => ipcRenderer.invoke(PromptApiChannel.DELETE_PROMPT, path)
+    deletePrompt: (path: string) => ipcRenderer.invoke(PromptApiChannel.DELETE_PROMPT, path),
+    savePrompt: (title: string, content: string, path: string | null = null) =>
+        ipcRenderer.invoke(PromptApiChannel.SAVE_PROMPT, title, content, path)
 }
 
 if (process.contextIsolated) {

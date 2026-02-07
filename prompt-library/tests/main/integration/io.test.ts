@@ -1,9 +1,15 @@
 import { describe, expect } from 'vitest'
-import { filesystemTest } from '../fixtures/fixtures'
-import { chmod, mkdir, writeFile } from 'node:fs/promises'
+import { filesystemTest } from '../../fixtures/fixtures'
+import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { deleteFiles as deleteFile, listFiles, readTextFile } from '../../src/main/io'
-import { existsSync } from 'node:fs'
+import {
+    deleteFiles as deleteFile,
+    listFiles,
+    readTextFile,
+    renameFile,
+    writeTextFile
+} from '../../../src/main/io'
+import { existsSync, statSync } from 'node:fs'
 
 describe('deleting files', () => {
     filesystemTest(
@@ -208,4 +214,164 @@ describe('listing directory', () => {
             expect('error' in fileListing).toBeTruthy()
         }
     )
+})
+
+describe('write to text file', () => {
+    describe.each(['', 'This is new file'])('with param: %s', (content) => {
+        filesystemTest(
+            'file with given path should be created when such file have not exist',
+            async ({ tmpdir }) => {
+                // Arrange
+                const newFilePath = path.join(tmpdir, 'newFile.txt')
+
+                // Act
+                const fileWriting = await writeTextFile(newFilePath, content)
+
+                // Assert
+                const actualContent = await readFile(newFilePath)
+                expect(fileWriting.success).toBeTruthy()
+                expect(actualContent.toString()).toBe(content)
+            }
+        )
+    })
+
+    describe.each(['', 'This is new content of the file'])('', (content) => {
+        filesystemTest(
+            'file with given path should be overriden when it already exists',
+            async ({ tmpdir }) => {
+                // Arrange
+                const newFilePath = path.join(tmpdir, 'newFile.txt')
+                await writeFile(newFilePath, 'Old content')
+
+                // Act
+                const fileWriting = await writeTextFile(newFilePath, content)
+
+                // Assert
+                const actualContent = await readFile(newFilePath)
+                expect(fileWriting.success).toBeTruthy()
+                expect(actualContent.toString()).toBe(content)
+            }
+        )
+    })
+
+    describe.each(['', 'subdir/dir', '.', '..', '~/file.txt'])('with param: %s', (filePath) => {
+        filesystemTest('no new file should be created when path is invalid', async ({ tmpdir }) => {
+            // Arrange
+            const newFilePath = path.join(tmpdir, filePath)
+
+            // Act
+            const fileWriting = await writeTextFile(newFilePath)
+
+            // Assert
+            expect(!existsSync(newFilePath) || !statSync(newFilePath).isFile()).toBeTruthy()
+            expect(fileWriting.success).toBeFalsy()
+        })
+    })
+
+    filesystemTest(
+        'file with given path should not be overriden when user has no permission to modify it',
+        async ({ tmpdir }) => {
+            // Arrange
+            const newFilePath = path.join(tmpdir, 'file.txt')
+            await writeFile(newFilePath, 'Old content')
+            await chmod(newFilePath, 0o444)
+
+            // Act
+            const fileWriting = await writeTextFile(newFilePath)
+
+            // Assert
+            await chmod(newFilePath, 0o777)
+            expect(fileWriting.success).toBeFalsy()
+            expect((await readFile(newFilePath)).toString()).toBe('Old content')
+        }
+    )
+
+    filesystemTest(
+        'file with given path should not be created when user has no permission to create files in directory',
+        async ({ tmpdir }) => {
+            // Arrange
+            const newFilePath = path.join(tmpdir, 'file.txt')
+            await chmod(tmpdir, 0o444)
+
+            // Act
+            const fileWriting = await writeTextFile(newFilePath)
+
+            // Assert
+            await chmod(tmpdir, 0o777)
+            expect(fileWriting.success).toBeFalsy()
+            expect(existsSync(newFilePath)).toBeFalsy()
+        }
+    )
+})
+
+describe('rename file', () => {
+    filesystemTest('file should be renamed when it exists', async ({ tmpdir }) => {
+        // Arrange
+        const oldFilePath = path.join(tmpdir, 'file.txt')
+        await writeFile(oldFilePath, 'Old content')
+
+        // Act
+        const renaming = await renameFile(oldFilePath, 'newName.txt')
+
+        // Assert
+        const newFilePath = path.join(path.dirname(oldFilePath), 'newName.txt')
+        expect(renaming.success).toBeTruthy()
+        expect(existsSync(oldFilePath)).toBeFalsy()
+        expect((await readFile(newFilePath)).toString()).toBe('Old content')
+    })
+
+    describe.each(['', 'subsubdir/dir', '.', '..', '~/file.txt', '../newName'])(
+        'with param: %s',
+        (newName) => {
+            filesystemTest('rename should fail when new name is invalid', async ({ tmpdir }) => {
+                // Arrange
+                await mkdir(path.join(tmpdir, 'subdir')) // to avoid writing to parent that aren't cleared by fixture
+                await mkdir(path.join(tmpdir, 'subdir', 'subsubdir'))
+                const oldFilePath = path.join(tmpdir, 'subdir', 'file.txt')
+                await writeFile(oldFilePath, 'Old content')
+
+                // Act
+                const renaming = await renameFile(oldFilePath, newName)
+
+                // Assert
+                const newFilePath = path.join(path.dirname(oldFilePath), newName)
+                expect(renaming.success).toBeFalsy()
+                expect(existsSync(oldFilePath)).toBeTruthy()
+                expect(!existsSync(newFilePath) || !statSync(newFilePath).isFile()).toBeTruthy()
+            })
+        }
+    )
+
+    filesystemTest(
+        'rename should fail when user has no permission to rename file',
+        async ({ tmpdir }) => {
+            // Arrange
+            const oldFilePath = path.join(tmpdir, 'file.txt')
+            await writeFile(oldFilePath, 'Old content')
+            await chmod(tmpdir, 0o444)
+
+            // Act
+            const renaming = await renameFile(oldFilePath, 'newName.txt')
+
+            // Assert
+            const newFilePath = path.join(path.dirname(oldFilePath), 'newName.txt')
+            await chmod(tmpdir, 0o777)
+            expect(renaming.success).toBeFalsy()
+            expect(existsSync(oldFilePath)).toBeTruthy()
+            expect(existsSync(newFilePath)).toBeFalsy()
+        }
+    )
+
+    filesystemTest('rename should fail when file does not exist', async ({ tmpdir }) => {
+        // Arrange
+        const oldFilePath = path.join(tmpdir, 'file.txt')
+
+        // Act
+        const renaming = await renameFile(oldFilePath, 'newName.txt')
+
+        // Assert
+        const newFilePath = path.join(path.dirname(oldFilePath), 'newName.txt')
+        expect(renaming.success).toBeFalsy()
+        expect(existsSync(newFilePath)).toBeFalsy()
+    })
 })

@@ -29,6 +29,25 @@ declare global {
          * @returns Either the operation failed or succeeded.
          */
         deletePrompt: (path: string) => Promise<Result<undefined>>
+
+        /**
+         * Saves changes made to the prompt.
+         *
+         * Depending on the `path` param it overrides existing prompt or creates a new one.
+         *
+         * This is a transatcion. Both title and content saving must end with success or any changes would be rolled
+         * back otherwise.
+         *
+         * @param title Title of the new prompt. Must be a valid filename and unique among all existing prompts.
+         * @param content Content of the prompt.
+         * @param path Path to the prompt file. Default to null for new prompts that don't have prompt file yet.
+         * @returns Either the operation failed or succeeded.
+         */
+        savePrompt: (
+            title: string,
+            content: string,
+            path: string | null = null
+        ) => Promise<Result<undefined>>
     }
 
     interface Window {

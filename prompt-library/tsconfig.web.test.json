@@ -10,7 +10,8 @@
     "types/**/renderer.d.ts",
     "vitest.config.ts",
     "src/preload/preload.d.ts",
-    "src/common/**/*"
+    "src/common/**/*",
+    "tests/fixtures/*.ts"
   ],
   "compilerOptions": {
     "composite": true,

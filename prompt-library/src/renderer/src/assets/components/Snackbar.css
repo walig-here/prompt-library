@@ -19,6 +19,7 @@
     left: 50%;
     transform: translate(-50%, 0%);
     color: var(--color-inverse-on-surface);
+    z-index: 1000;
 }
 
 .md-snackbar-with-close {

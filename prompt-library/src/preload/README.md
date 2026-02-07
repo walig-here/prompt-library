@@ -35,7 +35,7 @@ Declaration of all API actions and their corresponding channels is placed in the
     }
     ```
 
-2. In the same file add new entry to the `PromptsApiChannels` enum. This would be an identifier for your action's *channel*.
+2. Then in [`common/promptsApi.ts`](/prompt-library/src/common/promptsApi.ts) add new entry to the `PromptsApiChannels` enum. This would be an identifier for your action's *channel*.
 
     ```ts
     // preload.d.ts

@@ -21,25 +21,60 @@ export class PromptsApiMocker {
                         })
                     )
                 return new Promise((resolve) =>
-                    resolve({ success: false, error: new Error('Not existing file!') })
+                    resolve({ success: false, error: new Error(`Not existing file: '${path}'`) })
                 )
             },
             listPrompts: () => {
-                const listedFile = this.userData.keys().toArray()
-                return new Promise((resolve) => resolve({ success: true, result: listedFile }))
+                const listedFiles = this.userData.keys().toArray()
+                return new Promise((resolve) => resolve({ success: true, result: listedFiles }))
             },
             promptTitle: (path) => {
-                if (this.userData.has(path))
-                    return new Promise((resolve) =>
+                if (this.userData.has(path)) {
+                    return new Promise((resolve) => {
                         resolve(this.userData.get(path)?.title as string)
-                    )
-                throw Error('Not existing entry!')
+                    })
+                }
+                throw Error(`Not existing entry (${path})!`)
             },
             deletePrompt: (path) => {
                 if (!this.userData.delete(path))
                     return new Promise((resolve) =>
                         resolve({ success: false, error: Error('Cant remove. Not existing file!') })
                     )
+                return new Promise((resolve) => resolve({ success: true, result: undefined }))
+            },
+            savePrompt: (title, content, path) => {
+                if (path === null) {
+                    if (this.userData.has(`${title}.md`))
+                        return new Promise((resolve) =>
+                            resolve({
+                                success: false,
+                                error: Error(
+                                    `Can't create prompt with not unique title: '${title}'`
+                                )
+                            })
+                        )
+                    this.userData.set(`${title}.md`, { content: content, title: title })
+                } else if (this.userData.has(path as string)) {
+                    const newPath = `${title}.md`
+                    if (newPath !== path && this.userData.has(newPath))
+                        return new Promise((resolve) =>
+                            resolve({
+                                success: false,
+                                error: new Error(`New name is not unique: '${title}'`)
+                            })
+                        )
+                    this.userData.delete(path as string)
+                    this.userData.set(`${title}.md`, { content: content, title: title })
+                } else {
+                    return new Promise((resolve) =>
+                        resolve({
+                            success: false,
+                            error: new Error(`Can't update not existing file: '${path}'`)
+                        })
+                    )
+                }
+
                 return new Promise((resolve) => resolve({ success: true, result: undefined }))
             }
         }

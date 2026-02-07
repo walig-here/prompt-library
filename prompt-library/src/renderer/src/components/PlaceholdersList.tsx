@@ -19,11 +19,13 @@ const PlaceholdersList: React.FunctionComponent<PlaceholderListProps> = ({
     placeholderInteraction = undefined
 }: PlaceholderListProps) => {
     return (
-        <div className="placeholder-list-container">
-            <Text size={TextSize.medium}>Detected placeholders</Text>
+        <div className="placeholder-list-container" role="list">
+            <Text size={TextSize.medium} isEmphasized={true}>
+                Detected placeholders
+            </Text>
             <div className="placeholder-list-items">
                 {Array.from(placeholders).map((placeholder) => (
-                    <div key={placeholder.name} className="placeholder-list-item">
+                    <div key={placeholder.name} className="placeholder-list-item" role="listitem">
                         <Chip
                             label={placeholder.name}
                             type={ChipType.INPUT}

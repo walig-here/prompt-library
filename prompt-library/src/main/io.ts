@@ -1,4 +1,4 @@
-import { readdir, readFile, rm } from 'fs/promises'
+import { readdir, readFile, rename, rm, writeFile } from 'fs/promises'
 import { lstatSync } from 'fs'
 import path from 'path'
 import { ensureError } from '../common/exceptions'
@@ -50,6 +50,54 @@ export async function listFiles(directoryPath: string): Promise<Result<string[]>
 export async function deleteFiles(path: string): Promise<Result<undefined>> {
     try {
         await rm(path)
+    } catch (thrownValue) {
+        const error = ensureError(thrownValue)
+        return { success: false, error: error }
+    }
+    return { success: true, result: undefined }
+}
+
+/**
+ * Writes to text file.
+ *
+ * Overrides existing files.
+ *
+ * @param path Path to file.
+ * @param content Content of the file.
+ *
+ * @returns Nothing on success or error when write failed.
+ */
+export async function writeTextFile(
+    path: string,
+    content: string = ''
+): Promise<Result<undefined>> {
+    try {
+        await writeFile(path, content)
+    } catch (thrownValue) {
+        const error = ensureError(thrownValue)
+        return { success: false, error: error }
+    }
+    return { success: true, result: undefined }
+}
+
+/**
+ * Renames file without moving it outside its current directory.
+ * @param filePath Path to file.
+ * @param newName New name for file.
+ * @returns Nothing on success or error when rename failed.
+ */
+export async function renameFile(filePath: string, newName: string): Promise<Result<undefined>> {
+    try {
+        const parentDir = path.dirname(filePath)
+        const newPath = path.join(parentDir, newName)
+        if (!path.matchesGlob(newPath, `${parentDir}/*`))
+            return {
+                success: false,
+                error: new Error(
+                    `Rename that changes the parent directory is not permitted. Pardir: ${parentDir}. New path: ${newPath}`
+                )
+            }
+        await rename(filePath, newPath)
     } catch (thrownValue) {
         const error = ensureError(thrownValue)
         return { success: false, error: error }

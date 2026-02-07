@@ -41,7 +41,7 @@ const FormItem: React.FunctionComponent<FormItemProps> = ({
     inputSupportingText = ''
 }: FormItemProps) => {
     return (
-        <div className="form-item-container">
+        <div className="form-item-container" role="form">
             <div className="form-item-header-container">
                 <Text type={TextType.headline} size={TextSize.small}>
                     {label}
