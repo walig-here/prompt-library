@@ -1,4 +1,8 @@
-@import "../base.css";
+@import '../base.css';
+
+.newlines {
+    white-space: pre-wrap;
+}
 
 .serif {
     font-family: 'Roboto serif', serif;

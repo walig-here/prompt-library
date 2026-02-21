@@ -35,7 +35,7 @@ function _getTextStyles(
     isSerif: boolean,
     color: TextColor
 ): string {
-    const sizeAndTypeStyle = `${type.valueOf()}-${size.valueOf()} ${color.valueOf()}`
+    const sizeAndTypeStyle = `newlines ${type.valueOf()}-${size.valueOf()} ${color.valueOf()}`
     const emphasizeStyle = isEmphasized ? `${sizeAndTypeStyle}-emphasized` : ''
     return `${sizeAndTypeStyle} ${emphasizeStyle} ${isSerif ? 'serif' : ''}`
 }

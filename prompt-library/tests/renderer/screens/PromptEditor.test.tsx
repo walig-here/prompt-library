@@ -65,7 +65,7 @@ describe('rendering', () => {
             )
             expect(nameInput.value).toBe(promptWithNoPlaceholdersPath.split('.')[0])
             expect(contentInput.value).toBe(
-                readAsset(`prompt-editor/${promptWithNoPlaceholdersPath}`).toString()
+                readAsset(`prompts/${promptWithNoPlaceholdersPath}`).toString()
             )
         }
     )
@@ -86,7 +86,7 @@ describe('placeholder detection', () => {
     })
 
     describe.each([
-        [promptWithMultiplePlaceholdersPath, [/CODE/i, /INSTRUCTIONS/i]],
+        [promptWithMultiplePlaceholdersPath, [/CODE 1/i, /INSTRUCTIONS/i]],
         [promptWithOnePlaceholderPath, [/DOCUMENT/i]]
     ])('with param: %s', (promptPath, expectedPlaceholders) => {
         testWithAssets(
@@ -119,7 +119,7 @@ describe('placeholder detection', () => {
 
     describe.each([
         [promptWithOnePlaceholderPath, []],
-        [promptWithMultiplePlaceholdersPath, [/CODE/i]]
+        [promptWithMultiplePlaceholdersPath, [/CODE 1/i]]
     ])('with param: %s', (promptPath, expectedPlaceholders) => {
         testWithAssets(
             'placeholder should disappear from the list when user removes all its occurrences from the content',
@@ -478,7 +478,7 @@ describe('default values', () => {
                 await window.prompts.promptTitle(promptWithNoPlaceholdersPath)
             )
             expect(contentTextInput.value).toBe(
-                readAsset(`prompt-editor/${promptWithNoPlaceholdersPath}`).toString()
+                readAsset(`prompts/${promptWithNoPlaceholdersPath}`).toString()
             )
         }
     )
@@ -587,7 +587,7 @@ describe('editing placeholder', () => {
     const user = userEvent.setup()
 
     describe.each([
-        [promptWithMultiplePlaceholdersPath, 'CODE'],
+        [promptWithMultiplePlaceholdersPath, 'CODE 1'],
         [promptWithOnePlaceholderPath, 'DOCUMENT']
     ])('with param: %s', (promptPath, renamedPlaceholder) => {
         testWithAssets(
@@ -614,7 +614,7 @@ describe('editing placeholder', () => {
                 ).getByRole('textbox')
                 expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
                 expect(contentInput.value).toBe(
-                    readAsset(`prompt-editor/${promptPath}`)
+                    readAsset(`prompts/${promptPath}`)
                         .toString()
                         .replaceAll(renamedPlaceholder, 'RENAMED')
                 )
@@ -663,7 +663,7 @@ async function renderPromptEditor(
             promptsNames.map((promptPath) => [
                 promptPath,
                 {
-                    content: assetsLoader(`prompt-editor/${promptPath}`).toString(),
+                    content: assetsLoader(`prompts/${promptPath}`).toString(),
                     title: promptPath.split('.')[0]
                 } as UserDataEntryMock
             ])

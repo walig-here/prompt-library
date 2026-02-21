@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import Text from '../components/Text'
 import { TextSize, TextType } from '../components/props/TextProps'
 import Button from '../components/Button'
@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router'
 import Dialog from '../components/Dialog'
 import Snackbar from '../components/Snackbar'
 import { SnackbarActionButton } from '../components/props/SnackbarProps'
+import { ContentWidthContext } from '../contexts'
 
 const REFRESH_BUTTON_LABEL = 'Refresh'
 const NEW_PROMPT_LABEL = 'New prompt'
@@ -94,6 +95,7 @@ const PromptList: React.FunctionComponent<EmptyProps> = () => {
         () => _searchStrategy(searchQuery, Array.from(prompts.values())),
         [prompts, searchQuery]
     )
+    const contentWidthContext = useContext(ContentWidthContext)
 
     const _refresh = async (): Promise<void> => {
         setSearchQuery('')
@@ -128,8 +130,9 @@ const PromptList: React.FunctionComponent<EmptyProps> = () => {
     }
 
     useEffect(() => {
+        contentWidthContext.setWidth('main-content')
         _refresh().catch((e) => console.log(ensureError(e).message))
-    }, [])
+    }, [contentWidthContext])
 
     return (
         <div className="prompt-list-body">
@@ -264,7 +267,7 @@ const PromptList: React.FunctionComponent<EmptyProps> = () => {
                         title={prompt.title}
                         promptFilePath={prompt.promptFilePath}
                         key={prompt.promptFilePath}
-                        onClick={() => navigate('filler') as void}
+                        onClick={() => navigate(`filler?prompt=${prompt.promptFilePath}`) as void}
                         onEditClick={() =>
                             setEditDialogData({
                                 isVisible: true,

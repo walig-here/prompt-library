@@ -1,6 +1,5 @@
 @import url('../base.css');
 
-
 .md-dialog {
     position: fixed;
     top: 50%;
@@ -36,7 +35,6 @@
     align-items: center;
     row-gap: 16px;
 }
-
 
 .md-dialog-children-container {
     width: 100%;

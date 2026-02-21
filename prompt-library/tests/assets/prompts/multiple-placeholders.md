@@ -3,7 +3,7 @@
 Refactor the python function given below.
 
 ```python
-${CODE}
+${CODE 1}
 ```
 
 Follow the instructions given below:

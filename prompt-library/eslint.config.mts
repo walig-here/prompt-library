@@ -5,13 +5,8 @@ import eslintPluginReactHooks from 'eslint-plugin-react-hooks'
 import eslintPluginReactRefresh from 'eslint-plugin-react-refresh'
 
 export default tseslint.config(
-    { 
-        ignores: [
-            '**/node_modules', 
-            '**/dist', 
-            '**/out',
-            'eslint.config.mts'
-        ] 
+    {
+        ignores: ['**/node_modules', '**/dist', '**/out', 'eslint.config.mts']
     },
     tseslint.configs.recommendedTypeChecked,
     eslintPluginReact.configs.flat.recommended,
@@ -39,8 +34,8 @@ export default tseslint.config(
         languageOptions: {
             parserOptions: {
                 projectService: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
+                tsconfigRootDir: import.meta.dirname
+            }
+        }
     }
 )

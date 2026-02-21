@@ -1,4 +1,4 @@
-@import url("../base.css");
+@import url('../base.css');
 
 .md-text-area-container {
     display: flex;
@@ -134,7 +134,6 @@
     padding-left: 4px;
     padding-right: 4px;
 }
-
 
 /* Filled */
 

@@ -1,4 +1,13 @@
-import { beforeAll } from 'vitest'
+import { beforeAll, vi } from 'vitest'
+
+// Clipboard mock
+Object.defineProperty(navigator, 'clipboard', {
+    value: {
+        writeText: vi.fn(),
+        readText: vi.fn()
+    },
+    configurable: true
+})
 
 beforeAll(() => {
     // Polyfill HTMLDialogElement methods for JSDOM

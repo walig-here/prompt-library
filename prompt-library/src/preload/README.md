@@ -1,12 +1,12 @@
 # Prompts API development
 
-This document contain manuals for developing the *PromptsAPI*. This API allows for communication between the local OS managed by *Node.js* ([`main`](/prompt-library/src/main/)) and UI managed by *React.js* ([`renderer`](/prompt-library/src/renderer/)).
+This document contain manuals for developing the _PromptsAPI_. This API allows for communication between the local OS managed by _Node.js_ ([`main`](/prompt-library/src/main/)) and UI managed by _React.js_ ([`renderer`](/prompt-library/src/renderer/)).
 
 ## Gloassary
 
 - **Channel:** A tunnel with a uniqe name that allows for invoking one specific action in the OS-side in response for the signal sent from the UI-side.
-- **Invoker:** Function called on the UI-side that sends signal to the OS-side via *channel*.
-- **Handler:** Function called by the OS-side when signal from UI-side is detected in the *channel*.
+- **Invoker:** Function called on the UI-side that sends signal to the OS-side via _channel_.
+- **Handler:** Function called by the OS-side when signal from UI-side is detected in the _channel_.
 
 ## File structure
 
@@ -35,32 +35,32 @@ Declaration of all API actions and their corresponding channels is placed in the
     }
     ```
 
-2. Then in [`common/promptsApi.ts`](/prompt-library/src/common/promptsApi.ts) add new entry to the `PromptsApiChannels` enum. This would be an identifier for your action's *channel*.
+2. Then in [`common/promptsApi.ts`](/prompt-library/src/common/promptsApi.ts) add new entry to the `PromptsApiChannels` enum. This would be an identifier for your action's _channel_.
 
     ```ts
     // preload.d.ts
     enum PromptApiChannel {
-        LOAD_PROMPT = 'prompt:load',
+        LOAD_PROMPT = 'prompt:load'
     }
     ```
 
-3. In the [`preload/index.ts`](/prompt-library/src/preload/index.ts) add implementation for *invoker* function within the `proimptsAPI` object. It must have the same name, return type and parameters as the function previously defined in the `preload.d.ts` file. The only thing it should do is invoking signal on the previously defined channel in a way shown in the exaple below.
+3. In the [`preload/index.ts`](/prompt-library/src/preload/index.ts) add implementation for _invoker_ function within the `proimptsAPI` object. It must have the same name, return type and parameters as the function previously defined in the `preload.d.ts` file. The only thing it should do is invoking signal on the previously defined channel in a way shown in the exaple below.
 
     ```ts
     // preload/index.ts
     const promptsAPI = {
-        loadFromFile: (path: string) => ipcRenderer.invoke(PromptApiChannel.LOAD_PROMPT, path),
+        loadFromFile: (path: string) => ipcRenderer.invoke(PromptApiChannel.LOAD_PROMPT, path)
     }
     ```
 
-4. In the [`main/promptsApiHandlers.ts`](/prompt-library/src/main/promptsApiHandlers.ts) add implemendation for the *hanlder* function inside the `definePromptApiHandlers()` function. Hanlder funtion should be put inside parameter of the `ipcMain.handle()` call as shown in the exaple below.
+4. In the [`main/promptsApiHandlers.ts`](/prompt-library/src/main/promptsApiHandlers.ts) add implemendation for the _hanlder_ function inside the `definePromptApiHandlers()` function. Hanlder funtion should be put inside parameter of the `ipcMain.handle()` call as shown in the exaple below.
 
     ```ts
     // main/promptsApiHandler.ts
     export function definePromptApiHandlers(): void {
         ipcMain.handle(
-            PromptApiChannel.LOAD_PROMPT,               // Channel
-            (_, path) => readTextFile(path as string)   // Hanlder function
+            PromptApiChannel.LOAD_PROMPT, // Channel
+            (_, path) => readTextFile(path as string) // Hanlder function
         )
     }
     ```

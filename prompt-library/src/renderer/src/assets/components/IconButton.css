@@ -1,4 +1,4 @@
-@import "../base.css";
+@import '../base.css';
 
 .md-button-icon {
     background-color: var(--color-primary);
@@ -34,8 +34,8 @@
 }
 
 .md-button-filled-icon {
-   background-color: var(--color-primary);
-   color: var(--color-on-primary);
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
 }
 
 .md-button-filled-icon:disabled {
@@ -55,7 +55,7 @@
 
 .md-button-tonal-icon:disabled {
     background-color: color-mix(in srgb, var(--color-on-surface) 10%, transparent);
-    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent)
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
 }
 
 .md-button-tonal-icon:hover::before {

@@ -301,7 +301,7 @@ function _validateName(name: string): TextFieldValidationResult {
 }
 
 function _getPlaceholders(promptContent: string): Set<string> {
-    const pattern = /\$\{([a-zA-Z]+)\}/g
+    const pattern = /\$\{(([^{}])+)\}/g
     const matches = Array.from(promptContent.matchAll(pattern))
     return new Set(matches.map((match) => match[1]))
 }
