@@ -10,20 +10,8 @@ Simple tool that stores LLM prompts for future utilization. Thought to be so sim
 
 - **Prompts retrieval:** Prompts can be retrieved from the storage with a chance to be copied to the user's clipboard.
 
-## 🚀 How to run this (linux)?
+## Manuals
 
-1. Create the python virtual environment. Activate it and install tool's dependencies.
-
-    ```bash
-    python3 -m venv <VENV_NAME>
-    source <VENV_NAME>/bin/activate
-    pip install -r requirements.txt
-    ```
-
-2. Create `prompts` directory in tool's root and put there markdown files with you prompts/prompt templates.
-
-3. Run `prompt_library` module with *Python*.
-
-    ```bash
-    python3 -m prompt_library
-    ```
+- [Development environment](/docs/development-manual.md)
+- [OS-UI communication development](/prompt-library/src/preload/)
+- [UI development](/prompt-library/src/renderer/)

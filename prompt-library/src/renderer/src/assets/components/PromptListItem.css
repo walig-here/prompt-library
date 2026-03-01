@@ -1,0 +1,58 @@
+@import url('../base.css');
+
+.promt-list-item-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--color-outline-variant);
+    border-radius: 28px;
+    height: 88px;
+    padding-right: 16px;
+    padding-left: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+}
+
+.promt-list-item-container:hover {
+    cursor: pointer;
+}
+
+.promt-list-item-container::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+.promt-list-item-container:hover::before {
+    background-color: color-mix(in srgb, var(--color-on-surface-variant) 8%, transparent);
+    border-color: var(--color-outline-variant);
+    color: var(--color-on-surface-variant);
+}
+
+.prompt-list-item-leading-elements {
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+    align-items: center;
+}
+
+.prompt-list-item-trailing-elements {
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+}
+
+.prompt-list-item-selected {
+    border-width: 2px;
+    border-color: var(--color-primary);
+}

@@ -1,0 +1,16 @@
+name: 'Run CI Docker container'
+description: 'Runs container with development image and sets it up for running CI jobs.'
+inputs:
+    image_tag:
+        description: Pulled image tag
+        required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Run CI container
+      shell: bash
+      run:  |
+        chmod +x -R scripts/
+        chmod 777 prompt-library/
+        docker run -v="$(pwd):/home/workspace" -dt --name="prompt-library" walig/prompt-library:"${{ inputs.image_tag }}" "/bin/bash"
+        docker exec prompt-library bash -c "cd prompt-library && npm install"

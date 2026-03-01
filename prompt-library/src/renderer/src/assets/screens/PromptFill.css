@@ -1,0 +1,64 @@
+@import url('../base.css');
+
+
+
+.prompt-filler-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 0px 10px 10px;
+    align-items: center;
+}
+
+.prompt-filler-header-buttons-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 3px;
+}
+
+.prompt-filler-form-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    width: 100%;
+}
+
+.prompt-filler-form-container-with-preview {
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+.prompt-filler-inputs-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+
+.prompt-filler-body {
+    display: flex;
+    flex-direction: row;
+}
+
+.prompt-filler-preview-container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    row-gap: 20px;
+    width: 60%;
+    background-color: var(--color-surface-container-low);
+    height: 100vh;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-left: 1px solid;
+    border-color: var(--color-outline);
+}
+
+.prompt-filler-preview-text-container {
+    background-color: var(--color-surface-bright);
+    padding: 30px;
+    border-radius: 28px;
+}

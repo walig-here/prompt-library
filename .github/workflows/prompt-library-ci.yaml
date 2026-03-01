@@ -1,0 +1,110 @@
+name: "Validate"
+on:
+    push:
+        branches:
+            - '**'
+
+jobs:
+    build_image:
+        name: "Build CI image"
+        runs-on: ubuntu-22.04
+        outputs:
+          docker_image_tag: ${{steps.is_dockerfile_changed.outputs.tag}}
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: "Check whether image has changed"
+              id: is_dockerfile_changed
+              run: |
+                if \
+                    [ "$(git branch --show-current)" != "main" ] && \
+                    git diff origin/main HEAD --name-status | grep -E '.*\s+Dockerfile'; \
+                then
+                    echo "tag=${{ github.ref_name }}" >> "${GITHUB_OUTPUT}"
+                    if git diff HEAD~1 HEAD --name-status | grep -E '.*\s+Dockerfile'; then
+                        echo "changed=true" >> "${GITHUB_OUTPUT}"
+                    else
+                        echo "changed=false" >> "${GITHUB_OUTPUT}"
+                    fi
+                else
+                    echo "tag=latest" >> "${GITHUB_OUTPUT}"
+                    echo "changed=false" >> "${GITHUB_OUTPUT}"
+                fi
+            - name: Build image and push it to DockerHub
+              if: steps.is_dockerfile_changed.outputs.changed == 'true'
+              env:
+                  DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+                  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+              run: |
+                docker build . -t walig/prompt-library:"${{ github.ref_name }}"
+                echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
+                docker push walig/prompt-library:"${{ github.ref_name }}"
+
+    typecheck:
+        name: "Typecheck"
+        runs-on: ubuntu-22.04
+        needs: [build_image]
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: "Run CI container"
+              uses: ./.github/actions/run-ci-container
+              with:
+                image_tag: ${{ needs.build_image.outputs.docker_image_tag }}
+            - name: Typecheck
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run typecheck"
+
+    lint:
+        name: "Lint"
+        runs-on: ubuntu-22.04
+        needs: [build_image]
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: "Run CI container"
+              uses: ./.github/actions/run-ci-container
+              with:
+                image_tag: ${{ needs.build_image.outputs.docker_image_tag }}
+            - name: Lint
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run lint"
+
+    test:
+        name: "Test"
+        runs-on: ubuntu-22.04
+        needs: [typecheck, lint, build_image]
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: "Run CI container"
+              uses: ./.github/actions/run-ci-container
+              with:
+                image_tag: ${{ needs.build_image.outputs.docker_image_tag }}
+            - name: Test
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run test"
+            - name: Coverage report
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run coverage && tar --create --file=coverage.tar.xz --xz --verbose coverage/"
+            - name: Store report
+              uses: actions/upload-artifact@v4
+              with:
+                name: coverage-report-html
+                path: prompt-library/coverage.tar.xz
+                retention-days: 21
+
+    teardown:
+        name: "Teardown CI"
+        runs-on: ubuntu-22.04
+        if: always()
+        needs: [typecheck, lint, test]
+        steps:
+            - name: Remove CI image
+              uses: geekyeggo/delete-artifact@v5
+              with:
+                name: docker-ci-image

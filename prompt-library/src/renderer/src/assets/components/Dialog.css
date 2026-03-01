@@ -1,0 +1,41 @@
+@import url('../base.css');
+
+.md-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-surface-container-high);
+    border-radius: 28px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    padding: 24px;
+    max-width: 560px;
+    min-width: 280px;
+    row-gap: 24px;
+}
+
+.md-dialog::backdrop {
+    background-color: color-mix(in srgb, var(--color-scrim) 50%, transparent);
+}
+
+.md-dialog-buttons-container {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    column-gap: 12px;
+}
+
+.md-dialog-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 16px;
+}
+
+.md-dialog-children-container {
+    width: 100%;
+}

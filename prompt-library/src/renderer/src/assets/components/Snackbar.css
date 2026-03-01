@@ -1,0 +1,37 @@
+@import url('../base.css');
+
+.md-snackbar-container {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--color-inverse-surface);
+    border-radius: 4px;
+    height: 48px;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 8px;
+    width: fit-content;
+    justify-content: space-between;
+    column-gap: 12px;
+    min-width: 50vw;
+    max-width: 95vw;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    color: var(--color-inverse-on-surface);
+    z-index: 1000;
+}
+
+.md-snackbar-with-close {
+    padding-right: 12px;
+}
+
+.md-snackbar-buttons-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 12px;
+}
+
+.md-snackbar-two-line {
+    height: 96px;
+}

@@ -1,0 +1,37 @@
+@import url('../base.css');
+
+.md-search-bar-container {
+    min-width: 360px;
+    height: 56px;
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+    background-color: var(--color-surface-container);
+    align-items: center;
+    border-radius: 1000px;
+    overflow: hidden;
+}
+
+.md-search-bar-input {
+    height: 100%;
+    width: 100%;
+    color: var(--color-on-surface-variant);
+    line-height: 24pt;
+    font-weight: 400;
+    font-size: 16pt;
+    background-color: color-mix(in srgb, var(--color-primary) 0%, transparent);
+    border: none;
+}
+
+.md-search-bar-input:focus {
+    border: none;
+    outline: none;
+}
+
+.md-search-bar-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}

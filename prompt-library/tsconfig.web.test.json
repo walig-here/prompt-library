@@ -1,0 +1,21 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
+  "include": [
+    "tests/renderer/**/*",
+    "tests/mocks/**/*.ts",
+    "tests/renderer/**/*.tsx",
+    "src/renderer/src/env.d.ts",
+    "src/renderer/src/**/*",
+    "src/renderer/src/**/*.tsx",
+    "types/**/renderer.d.ts",
+    "vitest.config.ts",
+    "src/preload/preload.d.ts",
+    "src/common/**/*",
+    "tests/fixtures/*.ts"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "react-jsx",
+    "baseUrl": "."
+  }
+}

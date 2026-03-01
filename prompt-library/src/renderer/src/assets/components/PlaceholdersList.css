@@ -1,0 +1,16 @@
+.placeholder-list-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.placeholder-list-items {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.placeholder-list-item {
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}

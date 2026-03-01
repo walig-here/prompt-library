@@ -1,0 +1,20 @@
+@import url('../base.css');
+
+.form-item-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.form-item-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-item-header-buttons-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 3px;
+}

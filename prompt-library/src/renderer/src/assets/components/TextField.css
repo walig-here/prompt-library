@@ -1,0 +1,176 @@
+@import url('../base.css');
+
+.md-text-area-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    height: 56px;
+    border-radius: 4px;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    position: relative;
+    column-gap: 16px;
+}
+
+.md-text-area-leading-components {
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+    width: 100%;
+    align-items: center;
+}
+
+.md-text-area-leading-components-multiline {
+    align-items: start;
+}
+
+.md-text-area-supporting-text {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 4px;
+}
+
+.md-text-area-input {
+    background-color: color-mix(in srgb, white 0%, transparent);
+    border: none;
+    line-height: 24px;
+    font-size: 16pt;
+    font-weight: 400;
+    caret-color: var(--color-primary);
+    color: var(--color-on-surface);
+    width: 100%;
+}
+
+.md-text-area-input-multiline {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: fit-content;
+    resize: none;
+}
+
+.md-text-area-input-multiline::-webkit-scrollbar {
+    display: none;
+}
+
+.md-text-area-input-components {
+    width: 100%;
+}
+
+.md-text-area-input:focus {
+    border: none;
+    outline: none;
+}
+
+.md-text-area-input:disabled {
+    caret-color: var(--color-primary);
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
+}
+
+.md-text-field-container-multiline {
+    height: fit-content;
+    align-items: start;
+}
+
+.md-text-area-container:hover::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+.md-text-area-input-error {
+    color: var(--color-error);
+}
+
+.md-text-area-text {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Outlined */
+
+.md-text-field-container-outlined {
+    border: solid;
+    border-color: var(--color-outline);
+    border-width: 1px;
+}
+
+.md-text-field-container-outlined-disabled {
+    border-color: color-mix(in srgb, var(--color-on-surface) 12%, transparent);
+    border: solid;
+    border-width: 1px;
+}
+
+.md-text-field-container-outlined:hover {
+    border-color: var(--color-on-surface);
+}
+
+.md-text-field-container-outlined-focused {
+    border: solid;
+    border-width: 3px;
+    border-color: var(--color-primary);
+}
+
+.md-text-area-label-outlined-error {
+    border-color: var(--color-error);
+}
+
+.md-text-area-label-outlined-error:hover {
+    border-color: var(--color-on-error-container);
+}
+
+.md-text-area-label-outlined {
+    background-color: var(--color-surface);
+    position: absolute;
+    top: -7pt;
+    left: 12px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+/* Filled */
+
+.md-text-area-active-indicator {
+    height: 1px;
+    color: var(--color-on-surface-variant);
+}
+
+.md-text-area-active-indicator-active {
+    height: 2px;
+    color: var(--color-primary);
+    border: solid;
+    border-width: 1px;
+    border-color: var(--color-primary);
+}
+
+.md-text-area-active-indicator-error {
+    height: 2px;
+    color: var(--color-error);
+    border: solid;
+    border-width: 1px;
+    border-color: var(--color-error);
+}
+
+.md-text-field-container-filled {
+    background-color: var(--color-surface-container-highest);
+}
+
+.md-text-field-container-filled:hover:before {
+    background-color: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+}
+
+.md-text-field-container-filled-disabled {
+    background-color: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
+}
+
+.md-text-area-active-indicator-disabled {
+    height: 1px;
+    color: color-mix(in srgb, var(--color-on-surface) 38%, transparent);
+}
