@@ -45,11 +45,14 @@ const Icon: React.FunctionComponent<IconProps> = ({ name, weight = 400, size = 2
 
     return (
         <>
-            <link
-                rel="stylesheet"
-                href={`https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@${size},${weight},0,0&icon_names=${name}`}
-            />
-            <span className={style}>{name}</span>
+            <div
+                style={{
+                    fontVariationSettings: `'FILL' '1', 'wght': ${weight}, 'GRAD': 0, 'opsz': ${size}`
+                }}
+                className="md-icon-container"
+            >
+                <span className={style}>{name}</span>
+            </div>
         </>
     )
 }
