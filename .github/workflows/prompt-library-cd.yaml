@@ -1,8 +1,9 @@
 name: "Deploy"
 on:
     push:
-        tags: 
+        tags:
             - '*'
+
 jobs:
     update_docker_image:
         runs-on: ubuntu-22.04
@@ -19,4 +20,48 @@ jobs:
               run: |
                 docker build . -t walig/prompt-library:latest
                 echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
-                docker push walig/prompt-library:latest 
+                docker push walig/prompt-library:latest
+
+    build_app_linux:
+        name: "Build Linux Distributable"
+        runs-on: ubuntu-22.04
+        needs: [update_docker_image]
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: "Run CI container"
+              uses: ./.github/actions/run-ci-container
+              with:
+                image_tag: latest
+            - name: Build
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run build:linux"
+            - name: Store DEB package
+              uses: actions/upload-artifact@v4
+              with:
+                name: "DEB package"
+                path: prompt-library/dist/prompt-library_1.0.0_amd64.deb
+                retention-days: 21
+    
+    build_app_windows:
+        name: "Build Windows Distributable"
+        runs-on: ubuntu-22.04
+        needs: [update_docker_image]
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: "Run CI container"
+              uses: ./.github/actions/run-ci-container
+              with:
+                image_tag: latest
+            - name: Build
+              run: docker exec prompt-library bash -c "dpkg --add-architecture i386 && apt-get update && apt-get install wine32 -y && cd prompt-library && npm run build:win"
+            - name: Store DEB package
+              uses: actions/upload-artifact@v4
+              with:
+                name: "Windows installer"
+                path: prompt-library/dist/prompt-library-1.0.0-setup.exe
+                retention-days: 21

@@ -1,6 +1,9 @@
 name: "Validate"
 on:
-    push
+    push:
+        branches:
+            - '**'
+
 jobs:
     build_image:
         name: "Build CI image"
@@ -52,32 +55,8 @@ jobs:
               uses: ./.github/actions/run-ci-container
               with:
                 image_tag: ${{ needs.build_image.outputs.docker_image_tag }}
-            - name: Typecheck 
-              run:  docker exec prompt-library bash -c "cd prompt-library && npm run typecheck"
-
-    test:
-        name: "Test"
-        runs-on: ubuntu-22.04
-        needs:  [typecheck, lint, build_image] 
-        steps:
-            - name: Checkout repo
-              uses: actions/checkout@v3
-              with:
-                  fetch-depth: 0
-            - name: "Run CI container"
-              uses: ./.github/actions/run-ci-container
-              with:
-                image_tag: ${{ needs.build_image.outputs.docker_image_tag }}
-            - name: Test
-              run:  docker exec prompt-library bash -c "cd prompt-library && npm run test"
-            - name: Coverage report
-              run: docker exec prompt-library bash -c "cd prompt-library && npm run coverage && tar --create --file=coverage.tar.xz --xz --verbose coverage/"
-            - name: Store report
-              uses: actions/upload-artifact@v4
-              with:
-                name: coverage-report-html
-                path: prompt-library/coverage.tar.xz
-                retention-days: 21
+            - name: Typecheck
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run typecheck"
 
     lint:
         name: "Lint"
@@ -93,16 +72,39 @@ jobs:
               with:
                 image_tag: ${{ needs.build_image.outputs.docker_image_tag }}
             - name: Lint
-              run:  docker exec prompt-library bash -c "cd prompt-library && npm run lint"
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run lint"
+
+    test:
+        name: "Test"
+        runs-on: ubuntu-22.04
+        needs: [typecheck, lint, build_image]
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: "Run CI container"
+              uses: ./.github/actions/run-ci-container
+              with:
+                image_tag: ${{ needs.build_image.outputs.docker_image_tag }}
+            - name: Test
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run test"
+            - name: Coverage report
+              run: docker exec prompt-library bash -c "cd prompt-library && npm run coverage && tar --create --file=coverage.tar.xz --xz --verbose coverage/"
+            - name: Store report
+              uses: actions/upload-artifact@v4
+              with:
+                name: coverage-report-html
+                path: prompt-library/coverage.tar.xz
+                retention-days: 21
 
     teardown:
         name: "Teardown CI"
         runs-on: ubuntu-22.04
         if: always()
-        needs: [typecheck, lint, test] 
+        needs: [typecheck, lint, test]
         steps:
             - name: Remove CI image
               uses: geekyeggo/delete-artifact@v5
               with:
-                name: docker-ci-image 
-            
+                name: docker-ci-image

@@ -98,7 +98,7 @@ const PromptFill: React.FunctionComponent<EmptyProps> = () => {
                     )
                 )
             )
-            .then(() => navigate('/') as void)
+            .then(() => navigate('/?snackbar=Prompt copied to clipboard!') as void)
             .catch((thrown) => {
                 const error = ensureError(thrown)
                 setSnackbarMessage(error.message)

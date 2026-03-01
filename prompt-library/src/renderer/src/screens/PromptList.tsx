@@ -8,7 +8,7 @@ import SearchBar from '../components/SearchBar'
 import PromptListItem from '../components/PromptListItem'
 import { PromptListItemMode, PromptListItemProps } from '../components/props/PromptItemProps'
 import { ensureError } from '../../../common/exceptions'
-import { useNavigate } from 'react-router'
+import { useNavigate, useSearchParams } from 'react-router'
 import Dialog from '../components/Dialog'
 import Snackbar from '../components/Snackbar'
 import { SnackbarActionButton } from '../components/props/SnackbarProps'
@@ -73,6 +73,7 @@ const NEW_PROMPT_ICON = 'add'
  */
 const PromptList: React.FunctionComponent<EmptyProps> = () => {
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
     const [prompts, setPrompts] = useState<Map<string, PromptListItemProps>>(new Map())
     const [snackbarData, setSnackbarData] = useState<_SnackbarData | undefined>(undefined)
     const [editDialogData, setEditDialogData] = useState<_EditDialogData>({
@@ -124,8 +125,13 @@ const PromptList: React.FunctionComponent<EmptyProps> = () => {
 
     useEffect(() => {
         contentWidthContext.setWidth('main-content')
-        _refresh().catch((e) => console.log(ensureError(e).message))
-    }, [contentWidthContext])
+        _refresh()
+            .then(() => {
+                const snackbarMessage = searchParams.get('snackbar')
+                snackbarMessage !== null && setSnackbarData({ message: snackbarMessage })
+            })
+            .catch((e) => console.log(ensureError(e).message))
+    }, [contentWidthContext, searchParams])
 
     return (
         <div className="prompt-list-body">

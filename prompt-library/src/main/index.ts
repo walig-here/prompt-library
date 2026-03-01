@@ -22,10 +22,10 @@ async function createWindow(): Promise<void> {
     })
 
     if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-        const debugIndexHtmlUri = `${process.env['ELECTRON_RENDERER_URL']}#`
+        const debugIndexHtmlUri = `${process.env['ELECTRON_RENDERER_URL']}`
         await mainWindow.loadURL(debugIndexHtmlUri)
     } else {
-        const release_index_html_path = join(__dirname, '../renderer/index.html#')
+        const release_index_html_path = join(__dirname, '../renderer/index.html')
         await mainWindow.loadFile(release_index_html_path)
     }
 }

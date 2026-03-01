@@ -58,7 +58,10 @@ RUN apt-get install -y \
     bison \
     python3-dbusmock \
     openjdk-8-jre \
-    fluxbox
+    fluxbox \
+    gcc-multilib \
+    g++-multilib \
+    wine
 RUN npm install -g typescript
 
 RUN useradd 'ci'
