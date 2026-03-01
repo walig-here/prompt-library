@@ -2,14 +2,8 @@ import React, { useContext, useEffect, useMemo, useState } from 'react'
 import Text from '../components/Text'
 import { TextSize, TextType } from '../components/props/TextProps'
 import Button from '../components/Button'
-import {
-    ButtonColor,
-    ButtonShape,
-    ButtonSize,
-    IconButtonColor
-} from '../components/props/ButtonProps'
+import { ButtonColor, ButtonShape } from '../components/props/ButtonProps'
 import '../assets/screens/PromptList.css'
-import IconButton from '../components/IconButton'
 import SearchBar from '../components/SearchBar'
 import PromptListItem from '../components/PromptListItem'
 import { PromptListItemMode, PromptListItemProps } from '../components/props/PromptItemProps'
@@ -26,7 +20,6 @@ const SEARCH_BAR_PLACEHOLDER = 'Search your prompts...'
 const HEADER = 'Your Prompts'
 
 const NEW_PROMPT_ICON = 'add'
-const BROWSE_PROMPT_FILES_ICON = 'file_open'
 
 /**
  * Presents list of all prompt stored and managed within the application's *user's files*.
@@ -187,13 +180,6 @@ const PromptList: React.FunctionComponent<EmptyProps> = () => {
                     {HEADER}
                 </Text>
                 <div className="header-buttons">
-                    <IconButton
-                        iconName={BROWSE_PROMPT_FILES_ICON}
-                        shape={ButtonShape.square}
-                        size={ButtonSize.small}
-                        color={IconButtonColor.outlined}
-                        onClick={_onBorwsePromptFilesClicked}
-                    />
                     <Button
                         label={REFRESH_BUTTON_LABEL}
                         shape={ButtonShape.square}
@@ -455,11 +441,6 @@ const _onPromptSelected = (
         })
     )
     return promptsWithUpdatedSelections
-}
-
-function _onBorwsePromptFilesClicked(event: React.MouseEvent<HTMLButtonElement>): void {
-    event.altKey.valueOf()
-    console.log('browsing files with prompts')
 }
 
 interface _EditDialogData {

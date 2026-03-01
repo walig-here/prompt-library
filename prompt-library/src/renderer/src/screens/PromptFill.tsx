@@ -1,4 +1,4 @@
-import { ButtonColor, ButtonShape } from '../components/props/ButtonProps'
+import { ButtonColor, ButtonShape, IconButtonColor } from '../components/props/ButtonProps'
 import Button from '../components/Button'
 import Text from '../components/Text'
 import React, { useContext, useEffect, useState } from 'react'
@@ -10,6 +10,7 @@ import { TextFieldValidationResult } from '../components/props/TextFieldProps'
 import '../assets/screens/PromptFill.css'
 import { ContentWidthContext, ContentWidthContextData } from '../contexts'
 import { TextColor, TextSize, TextType } from '../components/props/TextProps'
+import Snackbar from '../components/Snackbar'
 
 /**
  * Allows to prepare prompt with placeholders for utilizing it in the LLM. It simply allows to replace placeholders
@@ -54,6 +55,7 @@ const PromptFill: React.FunctionComponent<EmptyProps> = () => {
     })
     const [isPreviewVisible, setIsPreviewVisible] = useState(false)
     const contentWidthContext = useContext<ContentWidthContextData>(ContentWidthContext)
+    const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null)
 
     useEffect((): void => {
         contentWidthContext.setWidth(isPreviewVisible ? 'main-content-wide' : 'main-content')
@@ -77,29 +79,37 @@ const PromptFill: React.FunctionComponent<EmptyProps> = () => {
     }, [searchParams, navigate])
 
     const _onConfirmClicked = (): void => {
-        promptData.placeholders.every(
-            (placeholder) => _placeholderValueValidator(placeholder.value).success
-        ) &&
-            navigator.clipboard
-                .writeText(
-                    _replacePlaceholders(
-                        promptData.promptContent,
-                        new Map(
-                            promptData.placeholders.map((placeholder) => [
-                                placeholder.name,
-                                placeholder.value !== ''
-                                    ? placeholder.value
-                                    : `\${${placeholder.name}}`
-                            ])
-                        )
+        for (const placeholder of promptData.placeholders) {
+            const placeholderValidationResult = _placeholderValueValidator(placeholder.value)
+            if (!placeholderValidationResult.success) {
+                setSnackbarMessage(placeholderValidationResult.reason)
+                return
+            }
+        }
+        navigator.clipboard
+            .writeText(
+                _replacePlaceholders(
+                    promptData.promptContent,
+                    new Map(
+                        promptData.placeholders.map((placeholder) => [
+                            placeholder.name,
+                            placeholder.value !== '' ? placeholder.value : `\${${placeholder.name}}`
+                        ])
                     )
                 )
-                .then(() => navigate('/') as void)
-                .catch((e) => console.log(e))
+            )
+            .then(() => navigate('/') as void)
+            .catch((thrown) => {
+                const error = ensureError(thrown)
+                setSnackbarMessage(error.message)
+            })
     }
 
     return (
         <div className="prompt-filler-body">
+            {snackbarMessage !== null && (
+                <Snackbar message={snackbarMessage} onClosed={() => setSnackbarMessage(null)} />
+            )}
             <div
                 className={`prompt-filler-form-container${isPreviewVisible ? ' prompt-filler-form-container-with-preview' : ''}`}
             >
@@ -119,17 +129,12 @@ const PromptFill: React.FunctionComponent<EmptyProps> = () => {
                             shape={ButtonShape.square}
                             onClick={() => navigate('/') as void}
                         />
-                        {isPreviewVisible ? (
-                            <IconButton
-                                iconName="preview_off"
-                                onClick={() => setIsPreviewVisible(false)}
-                            />
-                        ) : (
-                            <IconButton
-                                iconName="preview"
-                                onClick={() => setIsPreviewVisible(true)}
-                            />
-                        )}
+                        <IconButton
+                            iconName={isPreviewVisible ? 'preview_off' : 'preview'}
+                            onClick={() => setIsPreviewVisible((prev) => !prev)}
+                            shape={ButtonShape.square}
+                            color={IconButtonColor.outlined}
+                        />
                         <Button
                             label="Confirm"
                             icon_name="check"

@@ -70,17 +70,6 @@ describe('first render', () => {
         expect(screen.getByRole('button', { name: /.*new prompt/i })).toBeInTheDocument()
     })
 
-    test('browse files button should be visible when screen renders for the first time', async () => {
-        // Arrange
-        render(<PromptList />, { wrapper: HashRouter })
-
-        // Act
-        await waitFor(() => {}, { timeout: 1_000 })
-
-        // Assert
-        expect(screen.getByRole('button', { name: /file_open/i })).toBeInTheDocument()
-    })
-
     test('search bar should be visible when screen renders for the firs t time', async () => {
         // Arrange
         render(<PromptList />, { wrapper: HashRouter })

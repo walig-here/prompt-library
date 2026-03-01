@@ -1,13 +1,23 @@
-import { ipcMain } from 'electron'
+import { app, ipcMain } from 'electron'
 import path from 'path'
 import { deleteFiles as deleteFile, listFiles, readTextFile, renameFile, writeTextFile } from './io'
 import { PromptApiChannel } from '../common/promptsApi'
-
-const _USER_DATA_DIR = '/home/workspace/prompts'
+import { existsSync, mkdirSync } from 'fs'
 
 export function definePromptApiHandlers(): void {
+    let user_data_dir = process.env.USER_DATA_DIR
+    if (user_data_dir === undefined) {
+        user_data_dir = path.join(app.getPath('documents'), 'Prompt Library')
+        if (!existsSync(user_data_dir)) {
+            console.info(`Created user data directory`, { path: user_data_dir })
+            mkdirSync(user_data_dir)
+        }
+
+        console.info('Set user data directory', { path: user_data_dir })
+    }
+
     ipcMain.handle(PromptApiChannel.LOAD_PROMPT, (_, path) => readTextFile(path as string))
-    ipcMain.handle(PromptApiChannel.LIST_PTOMPTS, () => listPrompts(_USER_DATA_DIR))
+    ipcMain.handle(PromptApiChannel.LIST_PTOMPTS, () => listPrompts(user_data_dir))
     ipcMain.handle(
         PromptApiChannel.GET_PROMPT_TITLE,
         (_, promptPath) => path.basename(promptPath as string).split('.')[0]
@@ -16,7 +26,7 @@ export function definePromptApiHandlers(): void {
     ipcMain.handle(
         PromptApiChannel.SAVE_PROMPT,
         (_, title: string, content: string, promptPath: string | null = null) =>
-            savePrompt(title, content, promptPath, _USER_DATA_DIR, {
+            savePrompt(title, content, promptPath, user_data_dir, {
                 delete: deleteFile,
                 rename: renameFile,
                 write: writeTextFile
